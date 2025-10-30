@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Wider dialogs for tablets -->
+    <dimen name="dialog_max_width">960dp</dimen>
+    <dimen name="dialog_default_width">600dp</dimen>
+</resources>

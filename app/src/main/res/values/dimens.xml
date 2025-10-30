@@ -1,0 +1,13 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="nav_header_vertical_spacing">8dp</dimen>
+    <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <!-- Increased dialog widths to provide more horizontal space for form fields -->
+    <dimen name="dialog_max_width">720dp</dimen>
+    <dimen name="dialog_default_width">420dp</dimen>
+    <!-- Horizontal padding used by the shared EditText style -->
+    <dimen name="edit_text_padding_horizontal">12dp</dimen>
+</resources>

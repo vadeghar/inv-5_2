@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.inv_5.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_purchases"
+        android:name="com.example.inv_5.ui.purchases.PurchasesFragment"
+        android:label="@string/menu_purchases"
+        tools:layout="@layout/fragment_purchases" />
+
+    <fragment
+        android:id="@+id/nav_products"
+        android:name="com.example.inv_5.ui.products.ProductsFragment"
+        android:label="@string/menu_products"
+        tools:layout="@layout/fragment_products" />
+
+    <fragment
+        android:id="@+id/nav_sales"
+        android:name="com.example.inv_5.ui.sales.SalesFragment"
+        android:label="@string/menu_sales"
+        tools:layout="@layout/fragment_sales" />
+
+    <fragment
+        android:id="@+id/nav_stock_management"
+        android:name="com.example.inv_5.ui.stockmanagement.StockManagementFragment"
+        android:label="@string/menu_stock_management"
+        tools:layout="@layout/fragment_stock_management" />
+
+    <fragment
+        android:id="@+id/nav_vendors"
+        android:name="com.example.inv_5.ui.vendors.VendorsFragment"
+        android:label="@string/menu_vendors"
+        tools:layout="@layout/fragment_vendors" />
+
+    <fragment
+        android:id="@+id/nav_customers"
+        android:name="com.example.inv_5.ui.customers.CustomersFragment"
+        android:label="@string/menu_customers"
+        tools:layout="@layout/fragment_customers" />
+
+    <fragment
+        android:id="@+id/nav_reports"
+        android:name="com.example.inv_5.ui.reports.ReportsFragment"
+        android:label="@string/menu_reports"
+        tools:layout="@layout/fragment_reports" />
+</navigation>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Declare materialOutlinedButtonStyle if the platform Material library version doesn't expose it
+         This prevents AAPT errors when themes reference the attribute. -->
+    <attr name="materialOutlinedButtonStyle" format="reference" />
+</resources>
