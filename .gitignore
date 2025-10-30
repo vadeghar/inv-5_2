@@ -1,8 +1,10 @@
 /.gradle
 /.idea
 /.kotlin
+/.vscode
 /.qodo
 /build
 /gradle
 /gradlew
-/replay_pid39868.log
+/*.log
+/app/build/*
