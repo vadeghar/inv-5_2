@@ -16,7 +16,8 @@ object DatabaseProvider {
                 .addMigrations(
                     ProductMigrations.MIGRATION_1_2,
                     PurchaseItemMigrations.MIGRATION_2_3,
-                    PurchaseMigrations.MIGRATION_3_4
+                    PurchaseMigrations.MIGRATION_3_4,
+                    SaleMigrations.MIGRATION_4_5
                 )
                 .build()
         }

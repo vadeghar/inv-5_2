@@ -29,6 +29,9 @@
         <activity
             android:name=".ui.purchases.AddPurchaseActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.sales.AddSaleActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
