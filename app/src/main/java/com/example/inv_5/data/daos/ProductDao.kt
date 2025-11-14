@@ -27,6 +27,9 @@ interface ProductDao {
     @Query("SELECT * FROM products WHERE barCode = :barCode")
     suspend fun getByBarcode(barCode: String): List<Product>
 
+    @Query("UPDATE products SET quantityOnHand = :newQuantity WHERE id = :id")
+    suspend fun updateQuantity(id: String, newQuantity: Int)
+
     @Query("""
         SELECT * FROM products 
         WHERE name LIKE '%' || :searchQuery || '%' 

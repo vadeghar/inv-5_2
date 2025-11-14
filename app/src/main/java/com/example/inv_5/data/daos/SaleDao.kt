@@ -14,6 +14,9 @@ interface SaleDao {
     @Query("SELECT * FROM sales ORDER BY addedDate DESC LIMIT :limit OFFSET :offset")
     suspend fun listSales(limit: Int, offset: Int): List<Sale>
 
+    @Query("SELECT * FROM sales ORDER BY addedDate DESC")
+    suspend fun listAll(): List<Sale>
+
     @Query("SELECT * FROM sales WHERE customerName LIKE '%' || :searchQuery || '%' OR customerPhone LIKE '%' || :searchQuery || '%' ORDER BY addedDate DESC LIMIT :limit OFFSET :offset")
     suspend fun searchSales(searchQuery: String, limit: Int, offset: Int): List<Sale>
 

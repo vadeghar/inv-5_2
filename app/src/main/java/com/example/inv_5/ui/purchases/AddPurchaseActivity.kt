@@ -14,6 +14,7 @@ import com.example.inv_5.databinding.DialogAddPurchaseItemBinding
 import android.text.Editable
 import android.text.TextWatcher
 import android.text.InputFilter
+import kotlin.math.roundToLong
 import android.view.View
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -365,9 +366,20 @@ class AddPurchaseActivity : AppCompatActivity() {
                     }
                 }
 
-                val taxable = (dialogBinding.rateEditText.text.toString().toDoubleOrNull() ?: 0.0) * quantity
-                val tax = taxable * (taxPercentage / 100.0)
-                val total = taxable // per plan
+                // Correct calculation with tax included in total:
+                // Total = Rate × Quantity (invoice amount with tax included)
+                // Taxable = Total / (1 + Tax%/100) (original amount before tax)
+                // Tax Amount = Total - Taxable (ensures sum equals total)
+                val total = (dialogBinding.rateEditText.text.toString().toDoubleOrNull() ?: 0.0) * quantity
+                val taxableRaw = if (taxPercentage > 0) {
+                    total / (1 + (taxPercentage / 100.0))
+                } else {
+                    total
+                }
+                // Round taxable to 2 decimals first
+                val taxable = (taxableRaw * 100).roundToLong() / 100.0
+                // Calculate tax as difference to ensure taxable + tax = total
+                val tax = total - taxable
 
                 // display taxable/tax/total in non-editable fields
                 val taxableStr = String.format(Locale.getDefault(), "%.2f", taxable)
@@ -531,9 +543,17 @@ class AddPurchaseActivity : AppCompatActivity() {
             val quantity = dialogBinding.quantityEditText.text.toString().toIntOrNull() ?: 0
             val taxPercentage = dialogBinding.taxPercentageEditText.text.toString().toDoubleOrNull() ?: 0.0
 
-            val taxable = (dialogBinding.taxableEditText.text.toString().toDoubleOrNull() ?: (rate * quantity))
-            val tax = (dialogBinding.taxEditText.text.toString().toDoubleOrNull() ?: (taxable * (taxPercentage / 100.0)))
-            val total = (dialogBinding.totalEditText.text.toString().toDoubleOrNull() ?: taxable)
+            // Correct calculation: Total includes tax, Taxable = Total / (1 + Tax%/100)
+            val total = (dialogBinding.totalEditText.text.toString().toDoubleOrNull() ?: (rate * quantity))
+            val taxableRaw = if (taxPercentage > 0) {
+                (dialogBinding.taxableEditText.text.toString().toDoubleOrNull() ?: (total / (1 + (taxPercentage / 100.0))))
+            } else {
+                total
+            }
+            // Round taxable to 2 decimals first
+            val taxable = (taxableRaw * 100).roundToLong() / 100.0
+            // Calculate tax as difference to ensure taxable + tax = total
+            val tax = (dialogBinding.taxEditText.text.toString().toDoubleOrNull() ?: (total - taxable))
 
             // Clear previous errors on TextInputLayouts
             dialogBinding.productNameLayout.error = null

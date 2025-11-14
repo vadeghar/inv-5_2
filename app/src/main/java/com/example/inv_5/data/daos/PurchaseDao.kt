@@ -20,6 +20,9 @@ interface PurchaseDao {
     @Query("SELECT * FROM purchases WHERE id = :id LIMIT 1")
     suspend fun getById(id: String): Purchase?
 
+    @Query("SELECT * FROM purchases ORDER BY addedDate DESC")
+    suspend fun listAll(): List<Purchase>
+
     @Query("SELECT COUNT(*) FROM purchases")
     suspend fun getCount(): Int
 }
