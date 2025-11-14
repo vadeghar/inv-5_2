@@ -201,7 +201,171 @@ class ProductsFragment : Fragment() {
             dialog.dismiss()
         }
 
+        // Duplicate button
+        dialogBinding.duplicateButton.setOnClickListener {
+            dialog.dismiss()
+            showDuplicateProductDialog(product)
+        }
+
         dialog.show()
+    }
+
+    private fun showDuplicateProductDialog(originalProduct: Product) {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        val dialogBinding = DialogEditProductBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        // Set window size
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        // Change dialog title
+        dialogBinding.dialogTitleText.text = "Duplicate Product"
+
+        // Generate new ID for duplicated product
+        val newId = java.util.UUID.randomUUID().toString()
+
+        // Generate new barcode (append "-copy" or increment if already has suffix)
+        val newBarcode = generateUniqueBarcode(originalProduct.barCode)
+
+        // Populate fields with copied data
+        dialogBinding.idEditText.setText(newId)
+        dialogBinding.nameEditText.setText(originalProduct.name)
+        dialogBinding.barcodeEditText.setText(newBarcode)
+        dialogBinding.barcodeEditText.isEnabled = true // Allow editing barcode for duplicate
+        dialogBinding.categoryEditText.setText(originalProduct.category)
+        dialogBinding.mrpEditText.setText(String.format("%.2f", originalProduct.mrp))
+        dialogBinding.mrpEditText.isEnabled = true // Allow editing MRP for duplicate
+        dialogBinding.salePriceEditText.setText(String.format("%.2f", originalProduct.salePrice))
+        dialogBinding.salePriceEditText.isEnabled = true // Allow editing sale price for duplicate
+        dialogBinding.quantityOnHandEditText.setText("0") // Reset stock to 0
+        dialogBinding.reorderPointEditText.setText(originalProduct.reorderPoint.toString())
+        dialogBinding.maximumStockLevelEditText.setText(originalProduct.maximumStockLevel.toString())
+        dialogBinding.isActiveSwitch.isChecked = originalProduct.isActive
+
+        // Clear date fields for new product
+        dialogBinding.addedDtEditText.setText("")
+        dialogBinding.updatedDtEditText.setText("")
+
+        // Hide duplicate button in duplicate dialog
+        dialogBinding.duplicateButton.visibility = View.GONE
+
+        // Change Save button text
+        dialogBinding.saveButton.text = "Create Duplicate"
+
+        // Save button - Create new product
+        dialogBinding.saveButton.setOnClickListener {
+            // Validate fields
+            val name = dialogBinding.nameEditText.text.toString().trim()
+            val barcode = dialogBinding.barcodeEditText.text.toString().trim()
+            val category = dialogBinding.categoryEditText.text.toString().trim()
+            val mrpStr = dialogBinding.mrpEditText.text.toString().trim()
+            val salePriceStr = dialogBinding.salePriceEditText.text.toString().trim()
+            val reorderPointStr = dialogBinding.reorderPointEditText.text.toString().trim()
+            val maxStockLevelStr = dialogBinding.maximumStockLevelEditText.text.toString().trim()
+
+            if (name.isEmpty()) {
+                Toast.makeText(requireContext(), "Product name is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (barcode.isEmpty()) {
+                Toast.makeText(requireContext(), "Barcode is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (category.isEmpty()) {
+                Toast.makeText(requireContext(), "Category is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val mrp = mrpStr.toDoubleOrNull()
+            if (mrp == null || mrp <= 0) {
+                Toast.makeText(requireContext(), "Valid MRP is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val salePrice = salePriceStr.toDoubleOrNull()
+            if (salePrice == null || salePrice < 0) {
+                Toast.makeText(requireContext(), "Valid sale price is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val reorderPoint = reorderPointStr.toIntOrNull() ?: 1
+            val maxStockLevel = maxStockLevelStr.toIntOrNull() ?: 5
+            val isActive = dialogBinding.isActiveSwitch.isChecked
+
+            // Create duplicated product with new values
+            val duplicatedProduct = Product(
+                id = newId,
+                name = name,
+                mrp = mrp,
+                salePrice = salePrice,
+                barCode = barcode,
+                category = category,
+                quantityOnHand = 0, // Always start with 0 quantity
+                reorderPoint = reorderPoint,
+                maximumStockLevel = maxStockLevel,
+                isActive = isActive,
+                addedDt = Date(),
+                updatedDt = null
+            )
+
+            // Check if barcode already exists
+            lifecycleScope.launch {
+                val existingProducts = withContext(Dispatchers.IO) {
+                    val db = DatabaseProvider.getInstance(requireContext())
+                    db.productDao().getByBarcode(barcode)
+                }
+
+                if (existingProducts.isNotEmpty()) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Barcode already exists. Please use a different barcode.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@launch
+                }
+
+                // Insert new product
+                withContext(Dispatchers.IO) {
+                    val db = DatabaseProvider.getInstance(requireContext())
+                    db.productDao().insertProduct(duplicatedProduct)
+                }
+
+                Toast.makeText(
+                    requireContext(),
+                    "Product duplicated successfully",
+                    Toast.LENGTH_SHORT
+                ).show()
+                loadPage() // Refresh the list
+                dialog.dismiss()
+            }
+        }
+
+        // Cancel button
+        dialogBinding.cancelButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun generateUniqueBarcode(originalBarcode: String): String {
+        // If barcode already ends with "-copy" or "-copy-N", increment the number
+        val copyPattern = Regex("""^(.+)-copy(-(\d+))?$""")
+        val match = copyPattern.matchEntire(originalBarcode)
+
+        return if (match != null) {
+            val base = match.groupValues[1]
+            val currentNumber = match.groupValues[3].toIntOrNull() ?: 1
+            "$base-copy-${currentNumber + 1}"
+        } else {
+            "$originalBarcode-copy"
+        }
     }
 
     override fun onDestroyView() {

@@ -1,6 +1,7 @@
 package com.example.inv_5.ui.sales
 
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
@@ -8,6 +9,8 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.Window
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,9 +20,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.inv_5.R
+import com.example.inv_5.data.entities.Customer
 import com.example.inv_5.data.entities.Sale
 import com.example.inv_5.data.entities.SaleItem
 import com.example.inv_5.databinding.ActivityAddSaleBinding
+import com.example.inv_5.databinding.DialogAddEditCustomerBinding
 import com.example.inv_5.databinding.DialogAddSaleItemBinding
 import com.example.inv_5.ui.purchases.InlineBarcodeScanner
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +34,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import java.util.UUID
 
 class AddSaleActivity : AppCompatActivity() {
 
@@ -40,6 +46,7 @@ class AddSaleActivity : AppCompatActivity() {
     private lateinit var viewModel: AddSaleViewModel
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
     private var onCameraGrantedCallback: (() -> Unit)? = null
+    private var selectedCustomerId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -139,6 +146,106 @@ class AddSaleActivity : AppCompatActivity() {
 
         binding.cancelButton.setOnClickListener {
             finish()
+        }
+
+        binding.btnAddCustomer.setOnClickListener {
+            showAddCustomerDialog()
+        }
+
+        binding.btnSelectCustomer.setOnClickListener {
+            showCustomerSelectionDialog()
+        }
+    }
+
+    private fun showAddCustomerDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        val dialogBinding = DialogAddEditCustomerBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+
+        dialogBinding.dialogTitle.text = "Add Customer"
+
+        dialogBinding.btnSave.setOnClickListener {
+            val name = dialogBinding.etCustomerName.text.toString().trim()
+            val contactPerson = dialogBinding.etContactPerson.text.toString().trim()
+            val phone = dialogBinding.etPhone.text.toString().trim()
+            val email = dialogBinding.etEmail.text.toString().trim()
+            val address = dialogBinding.etAddress.text.toString().trim()
+            val isActive = dialogBinding.switchActive.isChecked
+
+            if (name.isEmpty()) {
+                Toast.makeText(this, "Customer name is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val currentDate = Date()
+            val newCustomer = Customer(
+                id = UUID.randomUUID().toString(),
+                name = name,
+                contactPerson = contactPerson,
+                phone = phone,
+                email = email,
+                address = address,
+                isActive = isActive,
+                addedDt = currentDate,
+                updatedDt = currentDate
+            )
+
+            lifecycleScope.launch {
+                val db = com.example.inv_5.data.database.DatabaseProvider.getInstance(applicationContext)
+                withContext(Dispatchers.IO) {
+                    db.customerDao().insertCustomer(newCustomer)
+                }
+                Toast.makeText(this@AddSaleActivity, "Customer added successfully", Toast.LENGTH_SHORT).show()
+                
+                // Auto-fill the customer fields
+                selectedCustomerId = newCustomer.id
+                binding.customerNameEditText.setText(newCustomer.name)
+                binding.customerAddressEditText.setText(newCustomer.address ?: "")
+                binding.customerPhoneEditText.setText(newCustomer.phone ?: "")
+                
+                dialog.dismiss()
+            }
+        }
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showCustomerSelectionDialog() {
+        lifecycleScope.launch {
+            val db = com.example.inv_5.data.database.DatabaseProvider.getInstance(applicationContext)
+            val customers = withContext(Dispatchers.IO) {
+                db.customerDao().getActiveCustomers()
+            }
+
+            if (customers.isEmpty()) {
+                Toast.makeText(this@AddSaleActivity, "No active customers found. Please add customers first.", Toast.LENGTH_LONG).show()
+                return@launch
+            }
+
+            val customerNames = customers.map { "${it.name} - ${it.phone ?: "No phone"}" }.toTypedArray()
+
+            AlertDialog.Builder(this@AddSaleActivity)
+                .setTitle("Select Customer")
+                .setItems(customerNames) { dialog, which ->
+                    val selectedCustomer = customers[which]
+                    selectedCustomerId = selectedCustomer.id
+                    binding.customerNameEditText.setText(selectedCustomer.name)
+                    binding.customerAddressEditText.setText(selectedCustomer.address ?: "")
+                    binding.customerPhoneEditText.setText(selectedCustomer.phone ?: "")
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
     }
 
@@ -489,7 +596,8 @@ class AddSaleActivity : AppCompatActivity() {
                     totalTaxable = totalTaxable,
                     totalTax = totalTax,
                     totalAmount = totalAmount,
-                    status = status
+                    status = status,
+                    customerId = selectedCustomerId
                 )
                 
                 viewModel.saveSale(sale, saleItems)

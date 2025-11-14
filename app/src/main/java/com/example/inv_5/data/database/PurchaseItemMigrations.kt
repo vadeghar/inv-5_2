@@ -10,6 +10,9 @@ object PurchaseItemMigrations {
             database.execSQL("ALTER TABLE purchase_items ADD COLUMN productBarcode TEXT NOT NULL DEFAULT ''")
             database.execSQL("ALTER TABLE purchase_items ADD COLUMN productName TEXT NOT NULL DEFAULT ''")
             database.execSQL("ALTER TABLE purchase_items ADD COLUMN productSalePrice REAL NOT NULL DEFAULT 0.0")
+            // Add indices for foreign keys
+            database.execSQL("CREATE INDEX IF NOT EXISTS index_purchase_items_purchaseId ON purchase_items(purchaseId)")
+            database.execSQL("CREATE INDEX IF NOT EXISTS index_purchase_items_productId ON purchase_items(productId)")
         }
     }
 }

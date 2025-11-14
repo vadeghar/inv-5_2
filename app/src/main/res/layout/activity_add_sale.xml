@@ -64,14 +64,38 @@
             android:padding="16dp">
 
         <!-- Customer Details Section -->
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Customer Details"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/dark_charcoal_text"
-            android:layout_marginBottom="8dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Customer Details"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/dark_charcoal_text" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddCustomer"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                app:icon="@drawable/ic_input_add" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSelectCustomer"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Customer"
+                app:icon="@android:drawable/ic_menu_search" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/customerNameEditText"

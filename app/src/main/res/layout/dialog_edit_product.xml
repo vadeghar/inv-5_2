@@ -287,26 +287,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
         android:layout_marginTop="12dp">
 
+        <!-- Left side: Duplicate button -->
         <com.google.android.material.button.MaterialButton
             style="@style/Widget.App.MaterialButton.Outlined"
-            android:id="@+id/cancelButton"
+            android:id="@+id/duplicateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel" />
+            android:text="Duplicate"
+            android:textColor="@color/purple_500" />
 
-        <Space
-            android:layout_width="12dp"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.App.MaterialButton.Filled"
-            android:id="@+id/saveButton"
+        <!-- Right side: Cancel and Save buttons -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save" />
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.App.MaterialButton.Outlined"
+                android:id="@+id/cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel" />
+
+            <Space
+                android:layout_width="12dp"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.App.MaterialButton.Filled"
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

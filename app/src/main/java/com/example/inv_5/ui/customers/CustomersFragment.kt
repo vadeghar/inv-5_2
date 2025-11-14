@@ -1,38 +1,243 @@
 package com.example.inv_5.ui.customers
 
+import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.example.inv_5.data.database.DatabaseProvider
+import com.example.inv_5.data.entities.Customer
+import com.example.inv_5.databinding.DialogAddEditCustomerBinding
 import com.example.inv_5.databinding.FragmentCustomersBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.*
 
 class CustomersFragment : Fragment() {
 
     private var _binding: FragmentCustomersBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+    
+    private lateinit var customersAdapter: CustomersAdapter
+    private val customerDao by lazy { DatabaseProvider.getInstance(requireContext()).customerDao() }
+    
+    private var currentPage = 0
+    private val pageSize = 20
+    private var totalPages = 1
+    private var currentSearchQuery = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val customersViewModel =
-            ViewModelProvider(this).get(CustomersViewModel::class.java)
-
         _binding = FragmentCustomersBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textCustomers
-        customersViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        
+        setupRecyclerView()
+        setupSearchBar()
+        setupPagination()
+        setupFab()
+        
+        loadPage()
+    }
+
+    private fun setupRecyclerView() {
+        customersAdapter = CustomersAdapter(
+            onEditClick = { customer -> showEditCustomerDialog(customer) },
+            onDeleteClick = { customer -> confirmDeleteCustomer(customer) }
+        )
+        binding.customersRecyclerView.adapter = customersAdapter
+    }
+
+    private fun setupSearchBar() {
+        binding.searchEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                currentSearchQuery = s?.toString() ?: ""
+                currentPage = 0
+                loadPage()
+            }
+        })
+    }
+
+    private fun setupPagination() {
+        binding.btnPrevPage.setOnClickListener {
+            if (currentPage > 0) {
+                currentPage--
+                loadPage()
+            }
         }
-        return root
+
+        binding.btnNextPage.setOnClickListener {
+            if (currentPage < totalPages - 1) {
+                currentPage++
+                loadPage()
+            }
+        }
+    }
+
+    private fun setupFab() {
+        binding.fabAddCustomer.setOnClickListener {
+            showAddCustomerDialog()
+        }
+    }
+
+    private fun loadPage() {
+        lifecycleScope.launch {
+            val customers = withContext(Dispatchers.IO) {
+                customerDao.searchCustomers(
+                    searchQuery = currentSearchQuery,
+                    limit = pageSize,
+                    offset = currentPage * pageSize
+                )
+            }
+
+            customersAdapter.setItems(customers)
+            
+            // Update pagination info
+            totalPages = if (customers.size < pageSize) currentPage + 1 else currentPage + 2
+            binding.tvPageInfo.text = "Page ${currentPage + 1} of $totalPages"
+            binding.btnPrevPage.isEnabled = currentPage > 0
+            binding.btnNextPage.isEnabled = customers.size == pageSize
+            
+            // Show/hide empty view
+            if (customers.isEmpty()) {
+                binding.customersRecyclerView.visibility = View.GONE
+                binding.emptyView.visibility = View.VISIBLE
+                binding.paginationLayout.visibility = View.GONE
+            } else {
+                binding.customersRecyclerView.visibility = View.VISIBLE
+                binding.emptyView.visibility = View.GONE
+                binding.paginationLayout.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun showAddCustomerDialog() {
+        val dialogBinding = DialogAddEditCustomerBinding.inflate(layoutInflater)
+        
+        dialogBinding.dialogTitle.text = "Add Customer"
+        
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnSave.setOnClickListener {
+            val name = dialogBinding.etCustomerName.text.toString().trim()
+            if (name.isEmpty()) {
+                Toast.makeText(requireContext(), "Customer name is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val customer = Customer(
+                id = UUID.randomUUID().toString(),
+                name = name,
+                contactPerson = dialogBinding.etContactPerson.text.toString().trim().ifEmpty { null },
+                phone = dialogBinding.etPhone.text.toString().trim().ifEmpty { null },
+                email = dialogBinding.etEmail.text.toString().trim().ifEmpty { null },
+                address = dialogBinding.etAddress.text.toString().trim().ifEmpty { null },
+                isActive = dialogBinding.switchActive.isChecked,
+                addedDt = Date(),
+                updatedDt = Date()
+            )
+
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    customerDao.insertCustomer(customer)
+                }
+                Toast.makeText(requireContext(), "Customer added successfully", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+                loadPage()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showEditCustomerDialog(customer: Customer) {
+        val dialogBinding = DialogAddEditCustomerBinding.inflate(layoutInflater)
+        
+        dialogBinding.dialogTitle.text = "Edit Customer"
+        dialogBinding.etCustomerName.setText(customer.name)
+        dialogBinding.etContactPerson.setText(customer.contactPerson)
+        dialogBinding.etPhone.setText(customer.phone)
+        dialogBinding.etEmail.setText(customer.email)
+        dialogBinding.etAddress.setText(customer.address)
+        dialogBinding.switchActive.isChecked = customer.isActive
+        
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnSave.setOnClickListener {
+            val name = dialogBinding.etCustomerName.text.toString().trim()
+            if (name.isEmpty()) {
+                Toast.makeText(requireContext(), "Customer name is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val updatedCustomer = customer.copy(
+                name = name,
+                contactPerson = dialogBinding.etContactPerson.text.toString().trim().ifEmpty { null },
+                phone = dialogBinding.etPhone.text.toString().trim().ifEmpty { null },
+                email = dialogBinding.etEmail.text.toString().trim().ifEmpty { null },
+                address = dialogBinding.etAddress.text.toString().trim().ifEmpty { null },
+                isActive = dialogBinding.switchActive.isChecked,
+                updatedDt = Date()
+            )
+
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    customerDao.updateCustomer(updatedCustomer)
+                }
+                Toast.makeText(requireContext(), "Customer updated successfully", Toast.LENGTH_SHORT).show()
+                dialog.dismiss()
+                loadPage()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun confirmDeleteCustomer(customer: Customer) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Delete Customer")
+            .setMessage("Are you sure you want to delete ${customer.name}? This customer will be removed from existing sales records.")
+            .setPositiveButton("Delete") { _, _ ->
+                deleteCustomer(customer)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun deleteCustomer(customer: Customer) {
+        lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                customerDao.deleteCustomer(customer.id)
+            }
+            Toast.makeText(requireContext(), "Customer deleted", Toast.LENGTH_SHORT).show()
+            loadPage()
+        }
     }
 
     override fun onDestroyView() {

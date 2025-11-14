@@ -39,6 +39,7 @@ class AddPurchaseActivity : AppCompatActivity() {
     private lateinit var viewModel: AddPurchaseViewModel
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
     private var onCameraGrantedCallback: (() -> Unit)? = null
+    private var selectedSupplierId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -165,6 +166,90 @@ class AddPurchaseActivity : AppCompatActivity() {
 
         binding.cancelButton.setOnClickListener {
             finish()
+        }
+
+        binding.btnAddSupplier.setOnClickListener {
+            showAddSupplierDialog()
+        }
+
+        binding.btnSelectSupplier.setOnClickListener {
+            showSupplierSelectionDialog()
+        }
+    }
+
+    private fun showAddSupplierDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_add_edit_supplier, null)
+        val dialog = AlertDialog.Builder(this).setView(dialogView).create()
+
+        val etSupplierName = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.supplierNameEditText)
+        val etContactPerson = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.contactPersonEditText)
+        val etPhone = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.phoneEditText)
+        val etEmail = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.emailEditText)
+        val etAddress = dialogView.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.addressEditText)
+        val switchActive = dialogView.findViewById<com.google.android.material.switchmaterial.SwitchMaterial>(R.id.isActiveSwitch)
+        val btnSave = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.saveButton)
+        val btnCancel = dialogView.findViewById<com.google.android.material.button.MaterialButton>(R.id.cancelButton)
+
+        btnCancel.setOnClickListener { dialog.dismiss() }
+
+        btnSave.setOnClickListener {
+            val name = etSupplierName.text.toString().trim()
+            if (name.isEmpty()) {
+                Toast.makeText(this, "Supplier name is required", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val supplier = com.example.inv_5.data.entities.Supplier(
+                id = java.util.UUID.randomUUID().toString(),
+                name = name,
+                contactPerson = etContactPerson.text.toString().trim().ifEmpty { null },
+                phone = etPhone.text.toString().trim().ifEmpty { null },
+                email = etEmail.text.toString().trim().ifEmpty { null },
+                address = etAddress.text.toString().trim().ifEmpty { null },
+                isActive = switchActive.isChecked,
+                addedDt = java.util.Date(),
+                updatedDt = java.util.Date()
+            )
+
+            lifecycleScope.launch {
+                val db = com.example.inv_5.data.database.DatabaseProvider.getInstance(applicationContext)
+                withContext(Dispatchers.IO) {
+                    db.supplierDao().insertSupplier(supplier)
+                }
+                Toast.makeText(this@AddPurchaseActivity, "Supplier added successfully", Toast.LENGTH_SHORT).show()
+                selectedSupplierId = supplier.id
+                binding.vendorEditText.setText(supplier.name)
+                dialog.dismiss()
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun showSupplierSelectionDialog() {
+        lifecycleScope.launch {
+            val db = com.example.inv_5.data.database.DatabaseProvider.getInstance(applicationContext)
+            val suppliers = withContext(Dispatchers.IO) {
+                db.supplierDao().getActiveSuppliers()
+            }
+
+            if (suppliers.isEmpty()) {
+                Toast.makeText(this@AddPurchaseActivity, "No active suppliers found. Please add suppliers first.", Toast.LENGTH_LONG).show()
+                return@launch
+            }
+
+            val supplierNames = suppliers.map { "${it.name} - ${it.phone ?: "No phone"}" }.toTypedArray()
+
+            AlertDialog.Builder(this@AddPurchaseActivity)
+                .setTitle("Select Supplier")
+                .setItems(supplierNames) { dialog, which ->
+                    val selectedSupplier = suppliers[which]
+                    selectedSupplierId = selectedSupplier.id
+                    binding.vendorEditText.setText(selectedSupplier.name)
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
         }
     }
 
@@ -662,7 +747,8 @@ class AddPurchaseActivity : AppCompatActivity() {
                     updatedDate = if (originalPurchase != null) currentTime else null,
                     totalQty = totalQty,
                     totalTaxable = totalTaxable,
-                    status = status
+                    status = status,
+                    supplierId = selectedSupplierId
                 )
                 
                 viewModel.savePurchase(purchase, purchaseItems)

@@ -17,7 +17,11 @@ object DatabaseProvider {
                     ProductMigrations.MIGRATION_1_2,
                     PurchaseItemMigrations.MIGRATION_2_3,
                     PurchaseMigrations.MIGRATION_3_4,
-                    SaleMigrations.MIGRATION_4_5
+                    SaleMigrations.MIGRATION_4_5,
+                    SupplierMigrations.MIGRATION_5_6,
+                    SupplierMigrations.MIGRATION_6_7,
+                    CustomerMigrations.MIGRATION_7_8,
+                    CustomerMigrations.MIGRATION_8_9
                 )
                 .build()
         }

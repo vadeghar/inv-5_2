@@ -64,18 +64,42 @@
             android:padding="16dp">
 
         <!-- Form Fields -->
-        <EditText
-            android:id="@+id/vendorEditText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:padding="12dp"
-            android:hint="Vendor Name"
-            android:textColorHint="@color/medium_gray"
-            android:textColor="@color/dark_charcoal_text"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLines="1" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
+
+            <EditText
+                android:id="@+id/vendorEditText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="12dp"
+                android:hint="Vendor Name"
+                android:textColorHint="@color/medium_gray"
+                android:textColor="@color/dark_charcoal_text"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddSupplier"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                app:icon="@android:drawable/ic_input_add" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSelectSupplier"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select"
+                app:icon="@android:drawable/ic_menu_search" />
+        </LinearLayout>
 
         <EditText
             android:id="@+id/invoiceNoEditText"

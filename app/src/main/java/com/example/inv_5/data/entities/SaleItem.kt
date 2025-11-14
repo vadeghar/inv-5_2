@@ -2,6 +2,7 @@ package com.example.inv_5.data.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
@@ -19,6 +20,10 @@ import androidx.room.PrimaryKey
             childColumns = ["productId"],
             onDelete = ForeignKey.CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["saleId"]),
+        Index(value = ["productId"])
     ]
 )
 data class SaleItem(
