@@ -1,6 +1,7 @@
 package com.example.inv_5.ui.products
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.example.inv_5.data.database.DatabaseProvider
 import com.example.inv_5.data.entities.Product
 import com.example.inv_5.databinding.FragmentProductsBinding
 import com.example.inv_5.databinding.DialogEditProductBinding
+import com.example.inv_5.ui.history.ItemHistoryActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -205,6 +207,14 @@ class ProductsFragment : Fragment() {
         dialogBinding.duplicateButton.setOnClickListener {
             dialog.dismiss()
             showDuplicateProductDialog(product)
+        }
+
+        // View History button
+        dialogBinding.viewHistoryButton.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(requireContext(), ItemHistoryActivity::class.java)
+            intent.putExtra(ItemHistoryActivity.EXTRA_PRODUCT_ID, product.id)
+            startActivity(intent)
         }
 
         dialog.show()

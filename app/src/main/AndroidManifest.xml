@@ -50,6 +50,11 @@
             android:exported="false"
             android:label="Bluetooth Scanner Settings"
             android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ui.history.ItemHistoryActivity"
+            android:exported="false"
+            android:label="Item History"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>

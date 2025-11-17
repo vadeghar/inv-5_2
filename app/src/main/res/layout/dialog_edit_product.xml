@@ -289,14 +289,34 @@
         android:orientation="horizontal"
         android:layout_marginTop="12dp">
 
-        <!-- Left side: Duplicate button -->
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.App.MaterialButton.Outlined"
-            android:id="@+id/duplicateButton"
-            android:layout_width="wrap_content"
+        <!-- Left side: Duplicate and View History buttons -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Duplicate"
-            android:textColor="@color/purple_500" />
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.App.MaterialButton.Outlined"
+                android:id="@+id/duplicateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Duplicate"
+                android:textColor="@color/purple_500" />
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.App.MaterialButton.Outlined"
+                android:id="@+id/viewHistoryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="History"
+                android:textColor="@color/purple_500" />
+
+        </LinearLayout>
 
         <!-- Right side: Cancel and Save buttons -->
         <LinearLayout

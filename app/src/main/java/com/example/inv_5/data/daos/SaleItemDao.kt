@@ -19,4 +19,52 @@ interface SaleItemDao {
 
     @Query("DELETE FROM sale_items WHERE saleId = :saleId")
     suspend fun deleteBySaleId(saleId: String)
+
+    @Query("""
+        SELECT si.*, s.customerName, s.customerPhone, s.saleDate, s.customerId
+        FROM sale_items si
+        INNER JOIN sales s ON si.saleId = s.id
+        WHERE si.productId = :productId
+        ORDER BY s.saleDate DESC, s.addedDate DESC
+    """)
+    suspend fun getTransactionsByProductId(productId: String): List<SaleItemWithDocument>
+
+    @Query("""
+        SELECT si.*, s.customerName, s.customerPhone, s.saleDate, s.customerId
+        FROM sale_items si
+        INNER JOIN sales s ON si.saleId = s.id
+        WHERE si.productId = :productId
+        AND s.saleDate >= :startDate
+        AND s.saleDate <= :endDate
+        ORDER BY s.saleDate DESC, s.addedDate DESC
+    """)
+    suspend fun getTransactionsByProductIdAndDateRange(
+        productId: String,
+        startDate: Long,
+        endDate: Long
+    ): List<SaleItemWithDocument>
 }
+
+/**
+ * Data class to hold sale item with document details
+ */
+data class SaleItemWithDocument(
+    val id: String,
+    val saleId: String,
+    val productId: String,
+    val productBarcode: String,
+    val productName: String,
+    val hsn: String,
+    val mrp: Double,
+    val salePrice: Double,
+    val discountPercentage: Double,
+    val quantity: Int,
+    val taxPercentage: Double,
+    val taxable: Double,
+    val tax: Double,
+    val total: Double,
+    val customerName: String,
+    val customerPhone: String,
+    val saleDate: Long,
+    val customerId: String?
+)
