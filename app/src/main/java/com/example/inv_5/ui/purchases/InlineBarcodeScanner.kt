@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
@@ -25,18 +26,36 @@ class InlineBarcodeScanner @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    companion object {
+        private const val PREFS_NAME = "BarcodeScanner"
+        private const val KEY_CAMERA_LENS_FACING = "camera_lens_facing"
+        private const val LENS_FACING_BACK = CameraSelector.LENS_FACING_BACK
+        private const val LENS_FACING_FRONT = CameraSelector.LENS_FACING_FRONT
+    }
+
     private val previewView: PreviewView
+    private val switchCameraButton: ImageButton
     private var cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
     private var analyzer: ImageAnalysis? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private var scanner: BarcodeScanner = BarcodeScanning.getClient()
     private var lastScanned: String? = null
     private var onResult: ((String) -> Unit)? = null
+    private var currentLensFacing: Int = LENS_FACING_BACK
 
     init {
         LayoutInflater.from(context).inflate(R.layout.view_barcode_scanner, this, true)
         previewView = findViewById(R.id.previewView)
-        // close button wired by parent when needed
+        switchCameraButton = findViewById(R.id.switchCameraButton)
+        
+        // Load saved camera preference
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        currentLensFacing = prefs.getInt(KEY_CAMERA_LENS_FACING, LENS_FACING_BACK)
+        
+        // Setup camera switch button
+        switchCameraButton.setOnClickListener {
+            switchCamera()
+        }
     }
 
     fun startScanning(onResult: (String) -> Unit) {
@@ -59,6 +78,24 @@ class InlineBarcodeScanner @JvmOverloads constructor(
         }
     }
 
+    private fun switchCamera() {
+        // Toggle between front and back camera
+        currentLensFacing = if (currentLensFacing == LENS_FACING_BACK) {
+            LENS_FACING_FRONT
+        } else {
+            LENS_FACING_BACK
+        }
+        
+        // Save preference
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .edit()
+            .putInt(KEY_CAMERA_LENS_FACING, currentLensFacing)
+            .apply()
+        
+        // Rebind camera with new lens facing
+        bindCameraUseCases()
+    }
+
     @SuppressLint("UnsafeOptInUsageError")
     private fun bindCameraUseCases() {
         val cameraProvider = cameraProvider ?: return
@@ -73,7 +110,7 @@ class InlineBarcodeScanner @JvmOverloads constructor(
         }
 
         val cameraSelector = CameraSelector.Builder()
-            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+            .requireLensFacing(currentLensFacing)
             .build()
 
         try {

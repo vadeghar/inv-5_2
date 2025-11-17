@@ -15,6 +15,17 @@
         android:layout_height="match_parent"
         android:background="@android:color/transparent" />
 
+    <!-- Camera switch button in top-left -->
+    <ImageButton
+        android:id="@+id/switchCameraButton"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="start|top"
+        android:layout_margin="8dp"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@android:drawable/ic_menu_rotate"
+        android:contentDescription="Switch camera" />
+
     <!-- Close button in top-right -->
     <ImageButton
         android:id="@+id/closeScannerButton"

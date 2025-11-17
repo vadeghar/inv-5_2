@@ -132,6 +132,11 @@ class SettingsFragment : Fragment() {
         binding.btnExportSalesSummary.setOnClickListener {
             showDateRangeDialogForSalesSummaryExport()
         }
+        
+        // Scanner Settings
+        binding.btnBluetoothScanner.setOnClickListener {
+            openBluetoothScannerSettings()
+        }
 
         binding.btnExportProducts.setOnClickListener {
             Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
@@ -939,6 +944,11 @@ class SettingsFragment : Fragment() {
                 binding.btnExportAgingReport.text = "Export Inventory Aging Report"
             }
         }
+    }
+    
+    private fun openBluetoothScannerSettings() {
+        val intent = android.content.Intent(requireContext(), com.example.inv_5.ui.scanner.BluetoothScannerSettingsActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onDestroyView() {

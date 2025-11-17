@@ -35,6 +35,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.UUID
+import com.example.inv_5.bluetooth.BluetoothScannerManager
 
 class AddSaleActivity : AppCompatActivity() {
 
@@ -47,6 +48,10 @@ class AddSaleActivity : AppCompatActivity() {
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
     private var onCameraGrantedCallback: (() -> Unit)? = null
     private var selectedCustomerId: String? = null
+    
+    // Bluetooth scanner
+    private lateinit var bluetoothScannerManager: BluetoothScannerManager
+    private var bluetoothScanListener: ((String) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +59,9 @@ class AddSaleActivity : AppCompatActivity() {
         setContentView(binding.root)
         
         viewModel = ViewModelProvider(this).get(AddSaleViewModel::class.java)
+        
+        // Initialize Bluetooth scanner manager
+        bluetoothScannerManager = BluetoothScannerManager.getInstance(this)
 
         // Pre-register camera permission launcher
         cameraPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -348,6 +356,22 @@ class AddSaleActivity : AppCompatActivity() {
             .setView(dialogBinding.root)
             .create()
         dialog.show()
+        
+        // Register Bluetooth scanner listener for this dialog
+        bluetoothScanListener = { barcode ->
+            // Auto-fill barcode field when scanned via Bluetooth
+            dialogBinding.barcodeEditText.setText(barcode)
+            
+            // Auto-lookup product by barcode
+            loadProductByBarcode(barcode, dialogBinding)
+        }
+        bluetoothScanListener?.let { bluetoothScannerManager.addScanListener(it) }
+        
+        // Remove listener when dialog is dismissed
+        dialog.setOnDismissListener {
+            bluetoothScanListener?.let { bluetoothScannerManager.removeScanListener(it) }
+            bluetoothScanListener = null
+        }
 
         // Set dialog width
         try {

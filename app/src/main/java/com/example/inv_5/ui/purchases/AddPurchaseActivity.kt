@@ -29,6 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import android.content.DialogInterface
+import com.example.inv_5.bluetooth.BluetoothScannerManager
 
 class AddPurchaseActivity : AppCompatActivity() {
 
@@ -41,6 +42,10 @@ class AddPurchaseActivity : AppCompatActivity() {
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
     private var onCameraGrantedCallback: (() -> Unit)? = null
     private var selectedSupplierId: String? = null
+    
+    // Bluetooth scanner
+    private lateinit var bluetoothScannerManager: BluetoothScannerManager
+    private var bluetoothScanListener: ((String) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +53,9 @@ class AddPurchaseActivity : AppCompatActivity() {
         setContentView(binding.root)
     Log.i("AddPurchaseActivity", "onCreate: view binding inflated, saveButton id=${binding.saveButton.id}")
         viewModel = ViewModelProvider(this).get(AddPurchaseViewModel::class.java)
+        
+        // Initialize Bluetooth scanner manager
+        bluetoothScannerManager = BluetoothScannerManager.getInstance(this)
 
         // Pre-register camera permission launcher. Must be done before the Lifecycle is STARTED.
         cameraPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -495,6 +503,53 @@ class AddPurchaseActivity : AppCompatActivity() {
             .setView(dialogBinding.root)
             .create()
         dialog.show()
+        
+        // Register Bluetooth scanner listener for this dialog
+        bluetoothScanListener = { barcode ->
+            // Auto-fill barcode field when scanned via Bluetooth
+            dialogBinding.barcodeEditText.setText(barcode)
+            
+            // Auto-lookup product by barcode
+            lifecycleScope.launch {
+                val products = withContext(Dispatchers.IO) { viewModel.findProductsByBarcode(barcode) }
+                Log.i("AddPurchaseActivity", "Bluetooth scan: barcode='$barcode', found ${products.size} products")
+                when {
+                    products.isEmpty() -> {
+                        Toast.makeText(this@AddPurchaseActivity, "No product found for barcode: $barcode", Toast.LENGTH_SHORT).show()
+                    }
+                    products.size == 1 -> {
+                        val p = products[0]
+                        dialogBinding.productNameEditText.setText(p.name)
+                        dialogBinding.hsnEditText.setText(p.category)
+                        dialogBinding.mrpEditText.setText(String.format(Locale.getDefault(), "%.2f", p.mrp))
+                    }
+                    else -> {
+                        // Multiple products found - show selection dialog with Product Name and MRP
+                        val items = products.mapIndexed { index, product -> 
+                            "${index + 1}. ${product.name} - MRP: ₹${String.format(Locale.getDefault(), "%.2f", product.mrp)}"
+                        }.toTypedArray()
+                        
+                        AlertDialog.Builder(this@AddPurchaseActivity)
+                            .setTitle("Multiple products found - Select one")
+                            .setItems(items) { _: DialogInterface?, which: Int ->
+                                val p = products[which]
+                                dialogBinding.productNameEditText.setText(p.name)
+                                dialogBinding.hsnEditText.setText(p.category)
+                                dialogBinding.mrpEditText.setText(String.format(Locale.getDefault(), "%.2f", p.mrp))
+                            }
+                            .setCancelable(true)
+                            .show()
+                    }
+                }
+            }
+        }
+        bluetoothScanListener?.let { bluetoothScannerManager.addScanListener(it) }
+        
+        // Remove listener when dialog is dismissed
+        dialog.setOnDismissListener {
+            bluetoothScanListener?.let { bluetoothScannerManager.removeScanListener(it) }
+            bluetoothScanListener = null
+        }
 
         // Constrain dialog width for tablets and set max/default widths
         try {
