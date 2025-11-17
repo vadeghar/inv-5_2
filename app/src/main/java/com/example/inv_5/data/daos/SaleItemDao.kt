@@ -14,6 +14,9 @@ interface SaleItemDao {
     @Query("SELECT * FROM sale_items WHERE saleId = :saleId")
     suspend fun listBySaleId(saleId: String): List<SaleItem>
 
+    @Query("SELECT * FROM sale_items")
+    suspend fun listAll(): List<SaleItem>
+
     @Query("DELETE FROM sale_items WHERE saleId = :saleId")
     suspend fun deleteBySaleId(saleId: String)
 }

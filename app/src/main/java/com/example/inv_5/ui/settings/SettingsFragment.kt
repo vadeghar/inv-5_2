@@ -2,6 +2,8 @@ package com.example.inv_5.ui.settings
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -22,6 +24,12 @@ import com.example.inv_5.databinding.FragmentSettingsBinding
 import com.example.inv_5.utils.PurchaseExcelExporter
 import com.example.inv_5.utils.PurchaseExcelImporter
 import com.example.inv_5.utils.SaleExcelExporter
+import com.example.inv_5.utils.StockReportExporter
+import com.example.inv_5.utils.OutOfStockReportExporter
+import com.example.inv_5.utils.InventoryValuationReportExporter
+import com.example.inv_5.utils.ValuationMethod
+import com.example.inv_5.utils.COGSReportExporter
+import com.example.inv_5.utils.AgingReportExporter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -77,6 +85,29 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
+        // Reports - Inventory Reports
+        binding.btnExportStockSummary.setOnClickListener {
+            showDateRangeDialogForStockReport()
+        }
+
+        binding.btnExportOutOfStock.setOnClickListener {
+            exportOutOfStockReport()
+        }
+
+        // Reports - Valuation & Financial Reports
+        binding.btnExportInventoryValuation.setOnClickListener {
+            showValuationMethodDialog()
+        }
+
+        binding.btnExportCOGS.setOnClickListener {
+            showDateRangeDialogForCOGS()
+        }
+
+        binding.btnExportAgingReport.setOnClickListener {
+            exportAgingReport()
+        }
+
+        // Purchases
         binding.btnExportPurchases.setOnClickListener {
             exportPurchasesToExcel()
         }
@@ -606,6 +637,306 @@ class SettingsFragment : Fragment() {
             } finally {
                 binding.btnExportSalesSummary.isEnabled = true
                 binding.btnExportSalesSummary.text = "Export Sale Summary to Excel"
+            }
+        }
+    }
+
+    // Stock Report Functions
+    private fun showDateRangeDialogForStockReport() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Export Stock Summary Report")
+            .setMessage("Select time period for the report")
+            .setPositiveButton("Export All") { _, _ ->
+                exportStockSummary(null, null)
+            }
+            .setNeutralButton("Select Date Range") { _, _ ->
+                showStartDatePickerForStock { startDate ->
+                    showEndDatePickerForStock(startDate) { endDate ->
+                        exportStockSummary(startDate, endDate)
+                    }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showStartDatePickerForStock(onDateSelected: (Date) -> Unit) {
+        val calendar = Calendar.getInstance()
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                val selectedDate = Calendar.getInstance().apply {
+                    set(year, month, dayOfMonth, 0, 0, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }.time
+                onDateSelected(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).apply {
+            setTitle("Select Start Date")
+        }.show()
+    }
+
+    private fun showEndDatePickerForStock(startDate: Date, onDateSelected: (Date) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val startCalendar = Calendar.getInstance().apply { time = startDate }
+        
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                val selectedDate = Calendar.getInstance().apply {
+                    set(year, month, dayOfMonth, 23, 59, 59)
+                    set(Calendar.MILLISECOND, 999)
+                }.time
+                onDateSelected(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).apply {
+            setTitle("Select End Date")
+            datePicker.minDate = startCalendar.timeInMillis
+        }.show()
+    }
+
+    private fun exportStockSummary(startDate: Date?, endDate: Date?) {
+        binding.btnExportStockSummary.isEnabled = false
+        binding.btnExportStockSummary.text = "Exporting..."
+        
+        lifecycleScope.launch {
+            try {
+                val file = withContext(Dispatchers.IO) {
+                    StockReportExporter.exportStockSummary(requireContext(), startDate, endDate)
+                }
+                
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val dateRangeText = if (startDate != null && endDate != null) {
+                    " from ${dateFormat.format(startDate)} to ${dateFormat.format(endDate)}"
+                } else {
+                    " (All Time)"
+                }
+                
+                Toast.makeText(
+                    requireContext(),
+                    "Stock Summary Report$dateRangeText exported successfully to: ${file.name}",
+                    Toast.LENGTH_LONG
+                ).show()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Export failed: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
+            } finally {
+                binding.btnExportStockSummary.isEnabled = true
+                binding.btnExportStockSummary.text = "Export Stock Summary Report"
+            }
+        }
+    }
+
+    // Out-of-Stock Report Functions
+    private fun exportOutOfStockReport() {
+        binding.btnExportOutOfStock.isEnabled = false
+        binding.btnExportOutOfStock.text = "Exporting..."
+        
+        lifecycleScope.launch {
+            try {
+                val file = withContext(Dispatchers.IO) {
+                    OutOfStockReportExporter.exportOutOfStockReport(requireContext())
+                }
+                
+                Toast.makeText(
+                    requireContext(),
+                    "Out-of-Stock Report exported successfully to: ${file.name}",
+                    Toast.LENGTH_LONG
+                ).show()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Export failed: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
+            } finally {
+                binding.btnExportOutOfStock.isEnabled = true
+                binding.btnExportOutOfStock.text = "Export Out-of-Stock Report"
+            }
+        }
+    }
+
+    // Inventory Valuation Report Functions
+    private fun showValuationMethodDialog() {
+        val methods = arrayOf("FIFO (First In First Out)", "LIFO (Last In First Out)", "Weighted Average")
+        
+        AlertDialog.Builder(requireContext())
+            .setTitle("Select Valuation Method")
+            .setItems(methods) { _, which ->
+                val method = when (which) {
+                    0 -> ValuationMethod.FIFO
+                    1 -> ValuationMethod.LIFO
+                    2 -> ValuationMethod.WEIGHTED_AVERAGE
+                    else -> ValuationMethod.WEIGHTED_AVERAGE
+                }
+                exportInventoryValuation(method)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun exportInventoryValuation(method: ValuationMethod) {
+        binding.btnExportInventoryValuation.isEnabled = false
+        binding.btnExportInventoryValuation.text = "Exporting..."
+        
+        lifecycleScope.launch {
+            try {
+                val file = withContext(Dispatchers.IO) {
+                    InventoryValuationReportExporter.exportInventoryValuation(requireContext(), method)
+                }
+                
+                Toast.makeText(
+                    requireContext(),
+                    "Inventory Valuation Report (${method.name}) exported successfully to: ${file.name}",
+                    Toast.LENGTH_LONG
+                ).show()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Export failed: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
+            } finally {
+                binding.btnExportInventoryValuation.isEnabled = true
+                binding.btnExportInventoryValuation.text = "Export Inventory Valuation Report"
+            }
+        }
+    }
+
+    // COGS Report Functions
+    private fun showDateRangeDialogForCOGS() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Export COGS Report")
+            .setMessage("Select time period for the report")
+            .setPositiveButton("Export All") { _, _ ->
+                exportCOGSReport(null, null)
+            }
+            .setNeutralButton("Select Date Range") { _, _ ->
+                showStartDatePickerForCOGS { startDate ->
+                    showEndDatePickerForCOGS(startDate) { endDate ->
+                        exportCOGSReport(startDate, endDate)
+                    }
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showStartDatePickerForCOGS(onDateSelected: (Date) -> Unit) {
+        val calendar = Calendar.getInstance()
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                val selectedDate = Calendar.getInstance().apply {
+                    set(year, month, dayOfMonth, 0, 0, 0)
+                    set(Calendar.MILLISECOND, 0)
+                }.time
+                onDateSelected(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).apply {
+            setTitle("Select Start Date")
+        }.show()
+    }
+
+    private fun showEndDatePickerForCOGS(startDate: Date, onDateSelected: (Date) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val startCalendar = Calendar.getInstance().apply { time = startDate }
+        
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, dayOfMonth ->
+                val selectedDate = Calendar.getInstance().apply {
+                    set(year, month, dayOfMonth, 23, 59, 59)
+                    set(Calendar.MILLISECOND, 999)
+                }.time
+                onDateSelected(selectedDate)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).apply {
+            setTitle("Select End Date")
+            datePicker.minDate = startCalendar.timeInMillis
+        }.show()
+    }
+
+    private fun exportCOGSReport(startDate: Date?, endDate: Date?) {
+        binding.btnExportCOGS.isEnabled = false
+        binding.btnExportCOGS.text = "Exporting..."
+        
+        lifecycleScope.launch {
+            try {
+                val file = withContext(Dispatchers.IO) {
+                    COGSReportExporter.exportCOGSReport(requireContext(), startDate, endDate)
+                }
+                
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val dateRangeText = if (startDate != null && endDate != null) {
+                    " from ${dateFormat.format(startDate)} to ${dateFormat.format(endDate)}"
+                } else {
+                    " (All Time)"
+                }
+                
+                Toast.makeText(
+                    requireContext(),
+                    "COGS Report$dateRangeText exported successfully to: ${file.name}",
+                    Toast.LENGTH_LONG
+                ).show()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Export failed: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
+            } finally {
+                binding.btnExportCOGS.isEnabled = true
+                binding.btnExportCOGS.text = "Export COGS Report"
+            }
+        }
+    }
+
+    // Aging Report Functions
+    private fun exportAgingReport() {
+        binding.btnExportAgingReport.isEnabled = false
+        binding.btnExportAgingReport.text = "Exporting..."
+        
+        lifecycleScope.launch {
+            try {
+                val file = withContext(Dispatchers.IO) {
+                    AgingReportExporter.exportAgingReport(requireContext())
+                }
+                
+                Toast.makeText(
+                    requireContext(),
+                    "Inventory Aging Report exported successfully to: ${file.name}",
+                    Toast.LENGTH_LONG
+                ).show()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Export failed: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
+            } finally {
+                binding.btnExportAgingReport.isEnabled = true
+                binding.btnExportAgingReport.text = "Export Inventory Aging Report"
             }
         }
     }

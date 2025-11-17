@@ -14,6 +14,9 @@ interface PurchaseItemDao {
     @Query("SELECT * FROM purchase_items WHERE purchaseId = :purchaseId")
     suspend fun listByPurchaseId(purchaseId: String): List<PurchaseItem>
 
+    @Query("SELECT * FROM purchase_items")
+    suspend fun listAll(): List<PurchaseItem>
+
     @Query("DELETE FROM purchase_items WHERE purchaseId = :purchaseId")
     suspend fun deleteByPurchaseId(purchaseId: String)
 }

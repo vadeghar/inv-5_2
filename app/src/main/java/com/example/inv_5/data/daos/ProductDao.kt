@@ -50,4 +50,7 @@ interface ProductDao {
         OR CAST(mrp AS TEXT) LIKE '%' || :searchQuery || '%'
     """)
     suspend fun getSearchCount(searchQuery: String): Int
+
+    @Query("SELECT * FROM products ORDER BY name ASC")
+    suspend fun listAll(): List<Product>
 }
