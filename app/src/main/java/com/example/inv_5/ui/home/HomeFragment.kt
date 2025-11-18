@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.inv_5.R
 import com.example.inv_5.databinding.FragmentHomeBinding
 import com.example.inv_5.ui.purchases.AddPurchaseActivity
 import com.example.inv_5.ui.sales.AddSaleActivity
@@ -30,11 +32,36 @@ class HomeFragment : Fragment() {
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         
         setupRecyclerView()
+        setupCardClicks()
         setupQuickActions()
         setupSwipeRefresh()
         observeViewModel()
         
         return binding.root
+    }
+
+    private fun setupCardClicks() {
+        // Total Purchases card - Navigate to Purchases screen
+        binding.cardTotalPurchases.setOnClickListener {
+            findNavController().navigate(R.id.nav_purchases)
+        }
+        
+        // Total Sales card - Navigate to Sales screen
+        binding.cardTotalSales.setOnClickListener {
+            findNavController().navigate(R.id.nav_sales)
+        }
+        
+        // Out of Stock card - Navigate to Products screen
+        // TODO: Add filter for out-of-stock items in future
+        binding.cardOutOfStock.setOnClickListener {
+            findNavController().navigate(R.id.nav_stock_management)
+        }
+        
+        // Week Purchases card - Navigate to Purchases screen
+        // TODO: Add date filter for this week in future
+        binding.cardWeekPurchases.setOnClickListener {
+            findNavController().navigate(R.id.nav_purchases)
+        }
     }
 
     private fun setupRecyclerView() {

@@ -36,9 +36,13 @@
 
                 <!-- Total Purchases -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTotalPurchases"
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
                     app:cardBackgroundColor="#E3F2FD"
@@ -73,9 +77,13 @@
 
                 <!-- Total Sales -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardTotalSales"
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
                     app:cardBackgroundColor="#E8F5E9"
@@ -110,9 +118,13 @@
 
                 <!-- Out of Stock -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardOutOfStock"
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
                     app:cardBackgroundColor="#FFEBEE"
@@ -147,9 +159,13 @@
 
                 <!-- Week Purchases -->
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardWeekPurchases"
                     android:layout_width="0dp"
                     android:layout_height="120dp"
                     android:layout_margin="4dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
                     app:cardBackgroundColor="#FFF3E0"
