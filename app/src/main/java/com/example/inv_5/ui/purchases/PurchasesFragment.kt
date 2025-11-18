@@ -53,9 +53,10 @@ class PurchasesFragment : Fragment() {
         binding.purchasesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.purchasesRecyclerView.adapter = adapter
 
-        binding.backHomeButton.setOnClickListener {
-            // navigate back to home fragment using NavController
-            findNavController().navigate(com.example.inv_5.R.id.nav_home)
+        // Setup FAB click listener
+        binding.addPurchaseFab.setOnClickListener {
+            val intent = Intent(requireContext(), AddPurchaseActivity::class.java)
+            startActivity(intent)
         }
 
         // Setup search functionality
@@ -84,11 +85,6 @@ class PurchasesFragment : Fragment() {
         binding.nextButton.setOnClickListener {
             currentPage++
             loadPage()
-        }
-
-        binding.addPurchaseButton.setOnClickListener {
-            val intent = Intent(requireContext(), AddPurchaseActivity::class.java)
-            startActivity(intent)
         }
 
         // initial load

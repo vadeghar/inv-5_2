@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="@color/light_gray_background">
+    android:background="?attr/colorSurface">
 
     <TextView
         android:id="@+id/dialogTitleText"
@@ -14,7 +14,7 @@
         android:text="Add Sale Item"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:textColor="@color/dark_charcoal_text"
+        android:textColor="?attr/colorOnSurface"
         android:paddingBottom="8dp" />
 
     <ScrollView
@@ -40,7 +40,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     app:boxBackgroundMode="filled"
-                    app:boxBackgroundColor="@color/white"
+                    app:boxBackgroundColor="?attr/colorSurface"
                     app:endIconDrawable="@drawable/ic_barcode"
                     app:endIconMode="custom">
 
@@ -64,7 +64,7 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:src="@android:drawable/ic_popup_sync"
                     android:contentDescription="Load Product Details"
-                    app:tint="@color/accent_orange" />
+                    app:tint="?attr/colorPrimary" />
 
             </LinearLayout>
 
@@ -81,7 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -102,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -123,7 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -144,7 +144,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -163,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -183,7 +183,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -203,7 +203,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -222,7 +222,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -239,7 +239,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -258,7 +258,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundColor="?attr/colorSurface">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"

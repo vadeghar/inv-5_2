@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ========================================= -->
+    <!-- DARK MODE - Navy Blue + Green Enterprise -->
+    <!-- ========================================= -->
+    
+    <!-- Override primary colors for dark mode -->
+    <color name="primary_navy_blue">#0A357A</color>
+    <color name="secondary_blue">#1E5BB7</color>
+    <color name="accent_green">#43A047</color>
+    
+    <!-- Background & Surface (Dark Mode) -->
+    <color name="background_white">#0F1115</color>
+    <color name="surface_light_gray">#1A1C20</color>
+    <color name="text_primary">#E6E6E6</color>
+    <color name="text_secondary">#B3B3B3</color>
+    
+    <!-- Dashboard Card Colors (Dark Mode) -->
+    <color name="card_purchases_bg">#1C2530</color>
+    <color name="card_purchases_text">#64B5F6</color>
+    <color name="card_sales_bg">#1C2520</color>
+    <color name="card_sales_text">#81C784</color>
+    <color name="card_stock_out_bg">#2A1C1C</color>
+    <color name="card_stock_out_text">#EF5350</color>
+    <color name="card_week_purchases_bg">#2A2520</color>
+    <color name="card_week_purchases_text">#FFB74D</color>
+    <color name="card_new_purchase_bg">#1C2530</color>
+    <color name="card_new_purchase_text">#64B5F6</color>
+    <color name="card_new_sale_bg">#1C2520</color>
+    <color name="card_new_sale_text">#81C784</color>
+    <color name="card_products_bg">#1C1F2A</color>
+    <color name="card_products_text">#7986CB</color>
+    <color name="card_reports_bg">#1C2A28</color>
+    <color name="card_reports_text">#4DB6AC</color>
+    <color name="card_expenses_bg">#2A2820</color>
+    <color name="card_expenses_text">#FFD54F</color>
+    <color name="card_scan_bg">#1C242A</color>
+    <color name="card_scan_text">#4FC3F7</color>
+    <color name="card_customers_bg">#25202A</color>
+    <color name="card_customers_text">#BA68C8</color>
+    <color name="card_suppliers_bg">#202A1C</color>
+    <color name="card_suppliers_text">#9CCC65</color>
+    <color name="card_settings_bg">#1F2226</color>
+    <color name="card_settings_text">#90A4AE</color>
+    
+    <!-- Status Colors remain consistent -->
+    <color name="status_in_stock">#4CAF50</color>
+    <color name="status_low_stock">#FFA726</color>
+    <color name="status_out_of_stock">#EF5350</color>
+    <color name="status_reserved">#29B6F6</color>
+    <color name="status_damaged">#FFC107</color>
+</resources>

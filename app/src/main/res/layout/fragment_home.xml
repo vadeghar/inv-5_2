@@ -117,7 +117,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#E3F2FD"
+                    app:cardBackgroundColor="@color/card_purchases_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -133,7 +133,7 @@
                             android:layout_height="32dp"
                             android:src="@drawable/ic_shopping_cart"
                             android:contentDescription="Purchases Icon"
-                            app:tint="#1976D2"
+                            app:tint="@color/card_purchases_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -141,7 +141,7 @@
                             android:layout_height="wrap_content"
                             android:text="Total Purchases"
                             android:textSize="12sp"
-                            android:textColor="#1976D2" />
+                            android:textColor="@color/card_purchases_text" />
 
                         <TextView
                             android:id="@+id/tvTotalPurchases"
@@ -150,7 +150,7 @@
                             android:text="0"
                             android:textSize="32sp"
                             android:textStyle="bold"
-                            android:textColor="#1976D2"
+                            android:textColor="@color/card_purchases_text"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -166,7 +166,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#E8F5E9"
+                    app:cardBackgroundColor="@color/card_sales_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -182,7 +182,7 @@
                             android:layout_height="32dp"
                             android:src="@drawable/ic_sell"
                             android:contentDescription="Sales Icon"
-                            app:tint="#388E3C"
+                            app:tint="@color/card_sales_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -190,7 +190,7 @@
                             android:layout_height="wrap_content"
                             android:text="Total Sales"
                             android:textSize="12sp"
-                            android:textColor="#388E3C" />
+                            android:textColor="@color/card_sales_text" />
 
                         <TextView
                             android:id="@+id/tvTotalSales"
@@ -199,7 +199,7 @@
                             android:text="0"
                             android:textSize="32sp"
                             android:textStyle="bold"
-                            android:textColor="#388E3C"
+                            android:textColor="@color/card_sales_text"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -215,7 +215,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#FFEBEE"
+                    app:cardBackgroundColor="@color/card_stock_out_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -231,7 +231,7 @@
                             android:layout_height="32dp"
                             android:src="@drawable/ic_inventory"
                             android:contentDescription="Out of Stock Icon"
-                            app:tint="#D32F2F"
+                            app:tint="@color/card_stock_out_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -239,7 +239,7 @@
                             android:layout_height="wrap_content"
                             android:text="Out of Stock"
                             android:textSize="12sp"
-                            android:textColor="#D32F2F" />
+                            android:textColor="@color/card_stock_out_text" />
 
                         <TextView
                             android:id="@+id/tvOutOfStock"
@@ -248,7 +248,7 @@
                             android:text="0"
                             android:textSize="32sp"
                             android:textStyle="bold"
-                            android:textColor="#D32F2F"
+                            android:textColor="@color/card_stock_out_text"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -264,7 +264,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#FFF3E0"
+                    app:cardBackgroundColor="@color/card_week_purchases_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -280,7 +280,7 @@
                             android:layout_height="32dp"
                             android:src="@drawable/ic_calendar_today"
                             android:contentDescription="Week Purchases Icon"
-                            app:tint="#F57C00"
+                            app:tint="@color/card_week_purchases_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -288,7 +288,7 @@
                             android:layout_height="wrap_content"
                             android:text="Week Purchases"
                             android:textSize="12sp"
-                            android:textColor="#F57C00" />
+                            android:textColor="@color/card_week_purchases_text" />
 
                         <TextView
                             android:id="@+id/tvWeekPurchases"
@@ -297,7 +297,7 @@
                             android:text="0"
                             android:textSize="32sp"
                             android:textStyle="bold"
-                            android:textColor="#F57C00"
+                            android:textColor="@color/card_week_purchases_text"
                             android:layout_marginTop="4dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -313,7 +313,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#E8F5E9"
+                    app:cardBackgroundColor="@color/card_sales_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -329,7 +329,7 @@
                             android:layout_height="28dp"
                             android:src="@drawable/ic_input_add"
                             android:contentDescription="New Purchase Icon"
-                            app:tint="#2E7D32"
+                            app:tint="@color/card_sales_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -338,7 +338,7 @@
                             android:text="New Purchase"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#2E7D32" />
+                            android:textColor="@color/card_sales_text" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -353,7 +353,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#FFF3E0"
+                    app:cardBackgroundColor="@color/card_week_purchases_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -403,7 +403,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#F3E5F5"
+                    app:cardBackgroundColor="@color/card_products_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -419,7 +419,7 @@
                             android:layout_height="28dp"
                             android:src="@drawable/ic_products"
                             android:contentDescription="All Products Icon"
-                            app:tint="#7B1FA2"
+                            app:tint="@color/card_products_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -428,7 +428,7 @@
                             android:text="All Products"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#7B1FA2" />
+                            android:textColor="@color/card_products_text" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -443,7 +443,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#E0F2F1"
+                    app:cardBackgroundColor="@color/card_reports_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -459,7 +459,7 @@
                             android:layout_height="28dp"
                             android:src="@drawable/ic_reports"
                             android:contentDescription="Reports Icon"
-                            app:tint="#00796B"
+                            app:tint="@color/card_reports_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -468,7 +468,7 @@
                             android:text="Reports"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#00796B" />
+                            android:textColor="@color/card_reports_text" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -483,7 +483,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#FFF9C4"
+                    app:cardBackgroundColor="@color/card_expenses_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -499,7 +499,7 @@
                             android:layout_height="28dp"
                             android:src="@drawable/ic_attach_money"
                             android:contentDescription="Expenses Icon"
-                            app:tint="#F57F17"
+                            app:tint="@color/card_expenses_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -508,7 +508,7 @@
                             android:text="Expenses"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#F57F17" />
+                            android:textColor="@color/card_expenses_text" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -523,7 +523,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#E8EAF6"
+                    app:cardBackgroundColor="@color/card_scan_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -539,7 +539,7 @@
                             android:layout_height="28dp"
                             android:src="@drawable/ic_barcode"
                             android:contentDescription="Scan Barcode Icon"
-                            app:tint="#3F51B5"
+                            app:tint="@color/card_scan_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -548,7 +548,7 @@
                             android:text="Scan Barcode"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#3F51B5" />
+                            android:textColor="@color/card_scan_text" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -563,7 +563,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#E1F5FE"
+                    app:cardBackgroundColor="@color/card_customers_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -603,7 +603,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#F1F8E9"
+                    app:cardBackgroundColor="@color/card_suppliers_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -619,7 +619,7 @@
                             android:layout_height="28dp"
                             android:src="@drawable/ic_vendors"
                             android:contentDescription="Suppliers Icon"
-                            app:tint="#558B2F"
+                            app:tint="@color/card_suppliers_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -628,7 +628,7 @@
                             android:text="Suppliers"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#558B2F" />
+                            android:textColor="@color/card_suppliers_text" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -643,7 +643,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     app:cardElevation="4dp"
                     app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="#ECEFF1"
+                    app:cardBackgroundColor="@color/card_settings_bg"
                     app:layout_columnWeight="1"
                     app:layout_rowWeight="1">
 
@@ -659,7 +659,7 @@
                             android:layout_height="28dp"
                             android:src="@drawable/ic_settings"
                             android:contentDescription="Settings Icon"
-                            app:tint="#455A64"
+                            app:tint="@color/card_settings_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -668,7 +668,7 @@
                             android:text="Settings"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#455A64" />
+                            android:textColor="@color/card_settings_text" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

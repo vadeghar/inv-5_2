@@ -49,11 +49,6 @@ class SalesFragment : Fragment() {
         binding.salesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.salesRecyclerView.adapter = adapter
 
-        binding.backHomeButton.setOnClickListener {
-            // navigate back to home fragment using NavController
-            findNavController().navigate(R.id.nav_home)
-        }
-
         // Setup search functionality
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -83,7 +78,7 @@ class SalesFragment : Fragment() {
             loadPage()
         }
 
-        binding.addSaleButton.setOnClickListener {
+        binding.addSaleFab.setOnClickListener {
             val intent = Intent(requireContext(), AddSaleActivity::class.java)
             startActivity(intent)
         }

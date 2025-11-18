@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Legacy colors (kept for compatibility) -->
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -8,6 +9,89 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <!-- ========================================= -->
+    <!-- LIGHT MODE - Navy Blue + Green Enterprise -->
+    <!-- ========================================= -->
+    
+    <!-- Primary Colors -->
+    <color name="primary_navy_blue">#0D47A1</color>
+    <color name="secondary_blue">#1976D2</color>
+    <color name="accent_green">#43A047</color>
+    
+    <!-- Background & Surface -->
+    <color name="background_white">#FFFFFF</color>
+    <color name="surface_light_gray">#ECEFF1</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    
+    <!-- Dashboard Card Colors (Light Mode) -->
+    <color name="card_purchases_bg">#E3F2FD</color>
+    <color name="card_purchases_text">#0D47A1</color>
+    <color name="card_sales_bg">#E8F5E9</color>
+    <color name="card_sales_text">#2E7D32</color>
+    <color name="card_stock_out_bg">#FFEBEE</color>
+    <color name="card_stock_out_text">#C62828</color>
+    <color name="card_week_purchases_bg">#FFF3E0</color>
+    <color name="card_week_purchases_text">#E65100</color>
+    <color name="card_new_purchase_bg">#E3F2FD</color>
+    <color name="card_new_purchase_text">#0D47A1</color>
+    <color name="card_new_sale_bg">#E8F5E9</color>
+    <color name="card_new_sale_text">#2E7D32</color>
+    <color name="card_products_bg">#E8EAF6</color>
+    <color name="card_products_text">#3F51B5</color>
+    <color name="card_reports_bg">#E0F2F1</color>
+    <color name="card_reports_text">#00796B</color>
+    <color name="card_expenses_bg">#FFF9C4</color>
+    <color name="card_expenses_text">#F57F17</color>
+    <color name="card_scan_bg">#E1F5FE</color>
+    <color name="card_scan_text">#0277BD</color>
+    <color name="card_customers_bg">#F3E5F5</color>
+    <color name="card_customers_text">#7B1FA2</color>
+    <color name="card_suppliers_bg">#F1F8E9</color>
+    <color name="card_suppliers_text">#558B2F</color>
+    <color name="card_settings_bg">#ECEFF1</color>
+    <color name="card_settings_text">#455A64</color>
+    
+    <!-- Status Colors (Standard) -->
+    <color name="status_in_stock">#4CAF50</color>
+    <color name="status_low_stock">#FF9800</color>
+    <color name="status_out_of_stock">#F44336</color>
+    <color name="status_reserved">#2196F3</color>
+    <color name="status_damaged">#FFC107</color>
+    
+    <!-- ========================================= -->
+    <!-- DARK MODE - Navy Blue + Green Enterprise -->
+    <!-- ========================================= -->
+    
+    <!-- Primary Colors -->
+    <color name="dark_primary_navy">#0A357A</color>
+    <color name="dark_primary_variant">#0D47A1</color>
+    <color name="dark_secondary_blue">#1E5BB7</color>
+    
+    <!-- Accent / Action Colors -->
+    <color name="dark_accent_green">#43A047</color>
+    <color name="dark_accent_variant">#4CAF50</color>
+    
+    <!-- Background & Surfaces -->
+    <color name="dark_background">#0F1115</color>
+    <color name="dark_surface">#1A1C20</color>
+    <color name="dark_surface_elevated">#1C2530</color>
+    <color name="dark_divider">#2A2D31</color>
+    
+    <!-- Text Colors -->
+    <color name="dark_text_primary">#E6E6E6</color>
+    <color name="dark_text_secondary">#B3B3B3</color>
+    <color name="dark_text_disabled">#7A7A7A</color>
+    
+    <!-- Status / Alerts (Dark Mode) -->
+    <color name="dark_status_success">#4CAF50</color>
+    <color name="dark_status_warning">#FFA726</color>
+    <color name="dark_status_danger">#EF5350</color>
+    <color name="dark_status_info">#29B6F6</color>
+    
+    <!-- ========================================= -->
+    <!-- Legacy/Compatibility Colors -->
+    <!-- ========================================= -->
     <color name="light_gray_background">#F5F5F5</color>
     <color name="dark_charcoal_text">#333333</color>
     <color name="accent_orange">#E65100</color>

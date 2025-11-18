@@ -88,12 +88,12 @@ class AddSaleActivity : AppCompatActivity() {
             binding.saleDateEditText.setText(fmt.format(Calendar.getInstance().time))
         }
 
-        // Add item button in header
+        // Add item FAB
         binding.addItemButton.setOnClickListener {
             showAddSaleItemDialog()
         }
 
-        // Back button to navigate to Sales screen
+        // Back button
         binding.backToSalesButton.setOnClickListener {
             finish()
         }
@@ -109,7 +109,8 @@ class AddSaleActivity : AppCompatActivity() {
                     val items = withContext(Dispatchers.IO) { db.saleItemDao().listBySaleId(saleId) }
                     sale?.let { s ->
                         originalSale = s
-                        binding.headerTitle.text = "Edit Sale"
+                        // Set activity title for edit mode
+                        title = "Edit Sale"
                         binding.customerNameEditText.setText(s.customerName)
                         binding.customerAddressEditText.setText(s.customerAddress)
                         binding.customerPhoneEditText.setText(s.customerPhone)

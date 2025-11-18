@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:orientation="horizontal"
-            android:background="@color/accent_orange"
+            android:background="?attr/colorPrimary"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:gravity="center_vertical">
@@ -29,7 +29,7 @@
                 android:layout_height="40dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_arrow_back"
-                app:tint="@color/light_gray_background" />
+                app:tint="?attr/colorOnPrimary" />
 
             <TextView
                 android:id="@+id/headerTitle"
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Add Sale"
-                android:textColor="@color/white"
+                android:textColor="?attr/colorOnPrimary"
                 android:textSize="18sp"
                 android:layout_marginStart="8dp" />
 
@@ -48,7 +48,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@android:drawable/ic_input_add"
                 android:contentDescription="Add Sale Item"
-                app:tint="@color/white" />
+                app:tint="?attr/colorOnPrimary" />
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -63,7 +63,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-        <!-- Customer Details Section -->
+        <!-- Form Fields -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,14 +71,18 @@
             android:gravity="center_vertical"
             android:layout_marginBottom="8dp">
 
-            <TextView
+            <EditText
+                android:id="@+id/customerNameEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Customer Details"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/dark_charcoal_text" />
+                android:padding="12dp"
+                android:hint="Customer Name"
+                android:textColorHint="?android:attr/textColorHint"
+                android:textColor="?android:attr/textColorPrimary"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddCustomer"
@@ -86,26 +90,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Add"
-                app:icon="@drawable/ic_input_add" />
+                android:textColor="?attr/colorPrimary"
+                app:iconTint="?attr/colorPrimary"
+                app:icon="@android:drawable/ic_input_add" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSelectCustomer"
                 style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select Customer"
+                android:text="Select"
+                android:textColor="?attr/colorPrimary"
+                app:iconTint="?attr/colorPrimary"
                 app:icon="@android:drawable/ic_menu_search" />
         </LinearLayout>
 
         <EditText
-            android:id="@+id/customerNameEditText"
+            android:id="@+id/invoiceNoEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:padding="12dp"
-            android:hint="Customer Name"
-            android:textColorHint="@color/medium_gray"
-            android:textColor="@color/dark_charcoal_text"
+            android:hint="Invoice No"
+            android:textColorHint="?android:attr/textColorHint"
+            android:textColor="?android:attr/textColorPrimary"
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLines="1" />
@@ -117,8 +125,8 @@
             android:layout_marginBottom="8dp"
             android:padding="12dp"
             android:hint="Customer Address"
-            android:textColorHint="@color/medium_gray"
-            android:textColor="@color/dark_charcoal_text"
+            android:textColorHint="?android:attr/textColorHint"
+            android:textColor="?android:attr/textColorPrimary"
             android:imeOptions="actionNext"
             android:inputType="textMultiLine"
             android:maxLines="3" />
@@ -130,8 +138,8 @@
             android:layout_marginBottom="8dp"
             android:padding="12dp"
             android:hint="Customer Phone"
-            android:textColorHint="@color/medium_gray"
-            android:textColor="@color/dark_charcoal_text"
+            android:textColorHint="?android:attr/textColorHint"
+            android:textColor="?android:attr/textColorPrimary"
             android:imeOptions="actionNext"
             android:inputType="phone"
             android:maxLines="1" />
@@ -146,8 +154,8 @@
             android:drawableEnd="@android:drawable/ic_menu_my_calendar"
             android:focusable="false"
             android:clickable="true"
-            android:textColorHint="@color/medium_gray"
-            android:textColor="@color/dark_charcoal_text"
+            android:textColorHint="?android:attr/textColorHint"
+            android:textColor="?android:attr/textColorPrimary"
             android:imeOptions="actionNext"
             android:inputType="none"
             android:maxLines="1" />
@@ -168,26 +176,23 @@
                 android:layout_marginEnd="24dp"
                 android:text="Active"
                 android:checked="true"
-                android:textColor="@color/dark_charcoal_text" />
+                android:textColor="?android:attr/textColorPrimary" />
 
             <RadioButton
                 android:id="@+id/inactiveRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Inactive"
-                android:textColor="@color/dark_charcoal_text" />
+                android:textColor="?android:attr/textColorPrimary" />
         </RadioGroup>
 
-        <!-- Items List Section -->
-        <TextView
+        <!-- Items List -->
+        <include
+            android:id="@+id/saleItemsHeader"
+            layout="@layout/layout_sale_items_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Sale Items"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@color/dark_charcoal_text"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="16dp" />
             
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/saleItemsRecyclerView"
@@ -206,7 +211,7 @@
             android:layout_marginTop="32dp"
             android:orientation="vertical"
             android:padding="12dp"
-            android:background="@color/light_gray_background">
+            android:background="?attr/colorSurface">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -219,14 +224,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Total Taxable"
-                    android:textColor="@color/dark_charcoal_text" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:id="@+id/totalTaxableValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0.00"
-                    android:textColor="@color/dark_charcoal_text" />
+                    android:textColor="?android:attr/textColorPrimary" />
             </LinearLayout>
 
             <LinearLayout
@@ -240,14 +245,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Total Tax"
-                    android:textColor="@color/dark_charcoal_text" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:id="@+id/totalTaxValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0.00"
-                    android:textColor="@color/dark_charcoal_text" />
+                    android:textColor="?android:attr/textColorPrimary" />
             </LinearLayout>
 
             <LinearLayout
@@ -261,14 +266,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Total Qty"
-                    android:textColor="@color/dark_charcoal_text" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:id="@+id/totalQtyValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textColor="@color/dark_charcoal_text" />
+                    android:textColor="?android:attr/textColorPrimary" />
             </LinearLayout>
 
             <LinearLayout
@@ -282,14 +287,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Total Amount"
-                    android:textColor="@color/dark_charcoal_text" />
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <TextView
                     android:id="@+id/totalAmountValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0.00"
-                    android:textColor="@color/dark_charcoal_text" />
+                    android:textColor="?android:attr/textColorPrimary" />
             </LinearLayout>
         </LinearLayout>
 

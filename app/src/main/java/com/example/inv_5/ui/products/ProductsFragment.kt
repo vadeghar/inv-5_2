@@ -50,11 +50,6 @@ class ProductsFragment : Fragment() {
         binding.productsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.productsRecyclerView.adapter = adapter
 
-        binding.backHomeButton.setOnClickListener {
-            // navigate back to home fragment using NavController
-            findNavController().navigate(R.id.nav_home)
-        }
-
         // Setup search functionality
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {

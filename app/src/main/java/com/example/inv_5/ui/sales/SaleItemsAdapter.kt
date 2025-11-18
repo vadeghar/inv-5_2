@@ -22,10 +22,9 @@ class SaleItemsAdapter(private val items: MutableList<SaleItem>) :
         val item = items[position]
         holder.binding.serialTextView.text = (position + 1).toString()
         holder.binding.productNameTextView.text = item.productName.ifEmpty { item.hsn }
-        holder.binding.barcodeTextView.text = item.productBarcode
         holder.binding.quantityTextView.text = item.quantity.toString()
+        holder.binding.mrpTextView.text = String.format(java.util.Locale.getDefault(), "%.2f", item.mrp)
         holder.binding.salePriceTextView.text = String.format(java.util.Locale.getDefault(), "%.2f", item.salePrice)
-        holder.binding.totalTextView.text = String.format(java.util.Locale.getDefault(), "%.2f", item.total)
     }
 
     override fun getItemCount() = items.size
