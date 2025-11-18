@@ -21,7 +21,8 @@ object DatabaseProvider {
                     SupplierMigrations.MIGRATION_5_6,
                     SupplierMigrations.MIGRATION_6_7,
                     CustomerMigrations.MIGRATION_7_8,
-                    CustomerMigrations.MIGRATION_8_9
+                    CustomerMigrations.MIGRATION_8_9,
+                    StoreDetailsMigrations.MIGRATION_9_10
                 )
                 .build()
         }

@@ -3,7 +3,7 @@ package com.example.inv_5
 import android.os.Bundle
 import android.view.Menu
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,6 +13,10 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.inv_5.databinding.ActivityMainBinding
+import com.example.inv_5.data.database.DatabaseProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,7 +38,14 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_purchases, R.id.nav_sales, R.id.nav_stock_management, R.id.nav_vendors, R.id.nav_customers, R.id.nav_reports
+                R.id.nav_home,
+                R.id.nav_store_details,
+                R.id.nav_purchases,
+                R.id.nav_sales,
+                R.id.nav_stock_management,
+                R.id.nav_vendors,
+                R.id.nav_customers,
+                R.id.nav_reports
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -59,6 +70,10 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 else -> {
+                    if (!menuItem.isEnabled) {
+                        drawerLayout.closeDrawers()
+                        return@setNavigationItemSelectedListener true
+                    }
                     // Let NavController handle other menu items
                     navController.navigate(menuItem.itemId)
                     drawerLayout.closeDrawers()
@@ -66,6 +81,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        refreshStoreDetailsMenuState()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -77,5 +94,15 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    fun refreshStoreDetailsMenuState() {
+        lifecycleScope.launch {
+            val hasStoreDetails = withContext(Dispatchers.IO) {
+                DatabaseProvider.getInstance(this@MainActivity).storeDetailsDao().hasStoreDetails()
+            }
+            val menuItem = binding.navView.menu.findItem(R.id.nav_store_details)
+            menuItem?.isEnabled = !hasStoreDetails
+        }
     }
 }
