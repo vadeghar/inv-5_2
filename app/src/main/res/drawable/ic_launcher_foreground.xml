@@ -1,9 +1,49 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="108dp"
-    android:height="108dp"
-    android:viewportWidth="108"
-    android:viewportHeight="108">
+  android:width="108dp"
+  android:height="108dp"
+  android:viewportWidth="108"
+  android:viewportHeight="108">
   <path
-      android:fillColor="@color/dark_charcoal_text"
-      android:pathData="M0,0h108v108h-108z"/>
+    android:fillColor="@color/stocksmart_icon_background"
+    android:fillAlpha="0.65"
+    android:pathData="M54,4C27.49,4 6,25.49 6,52s21.49,48 48,48 48,-21.49 48,-48S80.51,4 54,4z" />
+
+  <path
+    android:fillColor="@color/stocksmart_icon_inner_glow"
+    android:pathData="M54,10C30.356,10 11,29.356 11,53s19.356,43 43,43 43,-19.356 43,-43S77.644,10 54,10z" />
+
+  <path
+    android:fillColor="@color/stocksmart_icon_brand_s"
+    android:fillAlpha="0.9"
+    android:pathData="M34,16C34,9.373 39.373,4 46,4h18c11.046,0 20,8.954 20,20s-8.954,20 -20,20H46c-4.418,0 -8,3.582 -8,8s3.582,8 8,8h24c13.255,0 24,10.745 24,24s-10.745,24 -24,24H44C28.536,108 16,95.464 16,80h10c0,10.493 8.507,19 19,19H70c7.18,0 13,-5.82 13,-13s-5.82,-13 -13,-13H46C34.954,73 26,64.046 26,53s8.954,-20 20,-20h18c6.628,0 12,-5.372 12,-12s-5.372,-12 -12,-12H46c-6.627,0 -12,4.373 -12,11z" />
+
+  <path
+    android:fillColor="@color/stocksmart_icon_chart_bar"
+    android:pathData="M26,60h8v30h-8z" />
+  <path
+    android:fillColor="@color/stocksmart_icon_chart_bar"
+    android:pathData="M42,48h8v42h-8z" />
+  <path
+    android:fillColor="@color/stocksmart_icon_chart_bar"
+    android:pathData="M58,56h8v34h-8z" />
+
+  <path
+    android:pathData="M24,72L41,52 55,62 81,38"
+    android:strokeColor="@color/stocksmart_icon_chart_line"
+    android:strokeWidth="6"
+    android:strokeLineCap="round"
+    android:strokeLineJoin="round" />
+
+  <path
+    android:fillColor="@color/stocksmart_icon_chart_line"
+    android:pathData="M28,72a4,4 0 1,1 -8,0a4,4 0 1,1 8,0" />
+  <path
+    android:fillColor="@color/stocksmart_icon_chart_line"
+    android:pathData="M45,52a4,4 0 1,1 -8,0a4,4 0 1,1 8,0" />
+  <path
+    android:fillColor="@color/stocksmart_icon_chart_line"
+    android:pathData="M59,62a4,4 0 1,1 -8,0a4,4 0 1,1 8,0" />
+  <path
+    android:fillColor="@color/stocksmart_icon_chart_line"
+    android:pathData="M84,38a4,4 0 1,1 -8,0a4,4 0 1,1 8,0" />
 </vector>

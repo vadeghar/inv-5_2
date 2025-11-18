@@ -2,8 +2,8 @@
     <string name="app_name">INV-5</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">StockSmart</string>
+    <string name="nav_header_subtitle">Secure. Local. Smart.</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
@@ -18,4 +18,16 @@
     <string name="add_purchase_item">Add Purchase Item</string>
     <string name="metric_icon">Metric Icon</string>
     <string name="activity_icon">Activity Icon</string>
+
+    <!-- Report labels -->
+    <string name="label_stock_summary_report">Stock Summary Report</string>
+    <string name="label_out_of_stock_report">Out-of-Stock Report</string>
+    <string name="label_inventory_valuation_report">Inventory Valuation Report</string>
+    <string name="label_cogs_report">COGS Report</string>
+    <string name="label_inventory_aging_report">Inventory Aging Report</string>
+    <string name="label_purchases_to_excel">Purchases to Excel</string>
+    <string name="label_purchase_summary_to_excel">Purchase Summary to Excel</string>
+    <string name="label_sales_to_excel">Sales to Excel</string>
+    <string name="label_sale_summary_to_excel">Sale Summary to Excel</string>
+    <string name="label_products_to_excel">Products to Excel</string>
 </resources>

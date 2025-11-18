@@ -3,7 +3,6 @@ package com.example.inv_5.ui.settings
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -21,15 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.inv_5.databinding.FragmentSettingsBinding
-import com.example.inv_5.utils.PurchaseExcelExporter
-import com.example.inv_5.utils.PurchaseExcelImporter
-import com.example.inv_5.utils.SaleExcelExporter
-import com.example.inv_5.utils.StockReportExporter
-import com.example.inv_5.utils.OutOfStockReportExporter
-import com.example.inv_5.utils.InventoryValuationReportExporter
-import com.example.inv_5.utils.ValuationMethod
-import com.example.inv_5.utils.COGSReportExporter
-import com.example.inv_5.utils.AgingReportExporter
+import com.example.inv_5.utils.DatabaseBackupManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -43,7 +34,7 @@ class SettingsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var permissionLauncher: ActivityResultLauncher<String>
-    private lateinit var filePickerLauncher: ActivityResultLauncher<Intent>
+    private lateinit var restoreFilePickerLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,13 +50,13 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        // File picker launcher for import
-        filePickerLauncher = registerForActivityResult(
+        // File picker launcher for restore
+        restoreFilePickerLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 result.data?.data?.let { uri ->
-                    importPurchasesFromExcel(uri)
+                    handleRestoreFileSelection(uri)
                 }
             }
         }
@@ -85,65 +76,18 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        // Reports - Inventory Reports
-        binding.btnExportStockSummary.setOnClickListener {
-            showDateRangeDialogForStockReport()
-        }
-
-        binding.btnExportOutOfStock.setOnClickListener {
-            exportOutOfStockReport()
-        }
-
-        // Reports - Valuation & Financial Reports
-        binding.btnExportInventoryValuation.setOnClickListener {
-            showValuationMethodDialog()
-        }
-
-        binding.btnExportCOGS.setOnClickListener {
-            showDateRangeDialogForCOGS()
-        }
-
-        binding.btnExportAgingReport.setOnClickListener {
-            exportAgingReport()
-        }
-
-        // Purchases
-        binding.btnExportPurchases.setOnClickListener {
-            exportPurchasesToExcel()
-        }
-
-        binding.btnExportPurchasesSummary.setOnClickListener {
-            showDateRangeDialogForSummaryExport()
-        }
-
-        binding.btnDownloadTemplate.setOnClickListener {
-            downloadTemplate()
-        }
-
-        binding.btnImportPurchases.setOnClickListener {
-            openFilePicker()
-        }
-
-        // Sales export buttons
-        binding.btnExportSales.setOnClickListener {
-            exportSalesToExcel()
-        }
-
-        binding.btnExportSalesSummary.setOnClickListener {
-            showDateRangeDialogForSalesSummaryExport()
-        }
-        
         // Scanner Settings
         binding.btnBluetoothScanner.setOnClickListener {
             openBluetoothScannerSettings()
         }
 
-        binding.btnExportProducts.setOnClickListener {
-            Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
+        // Database Backup & Restore
+        binding.btnBackupDatabase.setOnClickListener {
+            backupDatabase()
         }
 
-        binding.btnImportProducts.setOnClickListener {
-            Toast.makeText(requireContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
+        binding.btnRestoreDatabase.setOnClickListener {
+            openRestoreFilePicker()
         }
     }
 
@@ -170,785 +114,168 @@ class SettingsFragment : Fragment() {
         }
     }
 
-    private fun exportPurchasesToExcel() {
-        if (!checkAndRequestPermissions()) {
-            Toast.makeText(requireContext(), "Please grant storage permission", Toast.LENGTH_LONG).show()
-            return
-        }
-
-        // Show date range dialog
-        val dialog = android.app.AlertDialog.Builder(requireContext())
-            .setTitle("Export Purchases")
-            .setMessage("Select date range for export\n(Leave empty to export all)")
-            .setPositiveButton("Export All") { _, _ ->
-                performExport(null, null)
-            }
-            .setNegativeButton("Cancel", null)
-            .setNeutralButton("Select Range") { _, _ ->
-                showStartDatePickerForPurchases { start ->
-                    showEndDatePickerForPurchases(start) { end ->
-                        performExport(start, end)
-                    }
-                }
-            }
-            .create()
-        
-        dialog.show()
-    }
-
-    private fun showStartDatePickerForPurchases(onDateSelected: (Date) -> Unit) {
-        val calendar = Calendar.getInstance()
-        val datePickerDialog = android.app.DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                calendar.set(year, month, dayOfMonth, 0, 0, 0)
-                calendar.set(Calendar.MILLISECOND, 0)
-                onDateSelected(calendar.time)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePickerDialog.setTitle("Select Start Date")
-        datePickerDialog.show()
-    }
-
-    private fun showEndDatePickerForPurchases(startDate: Date, onDateSelected: (Date) -> Unit) {
-        val calendar = Calendar.getInstance()
-        calendar.time = startDate
-        
-        val datePickerDialog = android.app.DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                calendar.set(year, month, dayOfMonth, 23, 59, 59)
-                calendar.set(Calendar.MILLISECOND, 999)
-                onDateSelected(calendar.time)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePickerDialog.setTitle("Select End Date")
-        datePickerDialog.datePicker.minDate = startDate.time
-        datePickerDialog.show()
-    }
-
-    private fun performExport(startDate: Date?, endDate: Date?) {
-        lifecycleScope.launch {
-            try {
-                binding.btnExportPurchases.isEnabled = false
-                binding.btnExportPurchases.text = "Exporting..."
-
-                val file = withContext(Dispatchers.IO) {
-                    PurchaseExcelExporter.exportPurchases(requireContext(), startDate, endDate)
-                }
-
-                val dateRangeText = if (startDate != null && endDate != null) {
-                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    "\nDate Range: ${sdf.format(startDate)} to ${sdf.format(endDate)}"
-                } else {
-                    ""
-                }
-
-                Toast.makeText(
-                    requireContext(),
-                    "Exported successfully!$dateRangeText\nFile: ${file.name}\nLocation: Downloads folder",
-                    Toast.LENGTH_LONG
-                ).show()
-
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Export failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnExportPurchases.isEnabled = true
-                binding.btnExportPurchases.text = "Export Purchases to Excel"
-            }
-        }
-    }
-
-    private fun downloadTemplate() {
-        if (!checkAndRequestPermissions()) {
-            Toast.makeText(requireContext(), "Please grant storage permission", Toast.LENGTH_LONG).show()
-            return
-        }
-
-        lifecycleScope.launch {
-            try {
-                binding.btnDownloadTemplate.isEnabled = false
-                binding.btnDownloadTemplate.text = "Generating..."
-
-                val file = withContext(Dispatchers.IO) {
-                    PurchaseExcelExporter.generateTemplate(requireContext())
-                }
-
-                Toast.makeText(
-                    requireContext(),
-                    "Template downloaded!\nFile: ${file.name}\nLocation: Downloads folder",
-                    Toast.LENGTH_LONG
-                ).show()
-
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Failed to generate template: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnDownloadTemplate.isEnabled = true
-                binding.btnDownloadTemplate.text = "Download Import Template"
-            }
-        }
-    }
-
-    private fun openFilePicker() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-            type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-            addCategory(Intent.CATEGORY_OPENABLE)
-        }
-        filePickerLauncher.launch(Intent.createChooser(intent, "Select Excel File"))
-    }
-
-    private fun importPurchasesFromExcel(uri: Uri) {
-        lifecycleScope.launch {
-            try {
-                binding.btnImportPurchases.isEnabled = false
-                binding.btnImportPurchases.text = "Importing..."
-
-                val result = withContext(Dispatchers.IO) {
-                    PurchaseExcelImporter.importPurchases(requireContext(), uri)
-                }
-
-                if (result.success) {
-                    val message = buildString {
-                        append("Import Successful!\n\n")
-                        append("📦 Purchases Created: ${result.purchasesCreated}\n")
-                        append("📋 Items Imported: ${result.itemsImported}\n")
-                        append("👥 Suppliers Created: ${result.suppliersCreated}\n")
-                        
-                        if (result.errors.isNotEmpty()) {
-                            append("\n⚠️ Warnings (${result.errors.size}):\n")
-                            result.errors.take(5).forEach { error ->
-                                append("• $error\n")
-                            }
-                            if (result.errors.size > 5) {
-                                append("• ... and ${result.errors.size - 5} more\n")
-                            }
-                        }
-                    }
-
-                    android.app.AlertDialog.Builder(requireContext())
-                        .setTitle("Import Complete")
-                        .setMessage(message)
-                        .setPositiveButton("OK", null)
-                        .show()
-                } else {
-                    val errorMessage = buildString {
-                        append("Import Failed!\n\n")
-                        append(result.message)
-                        if (result.errors.isNotEmpty()) {
-                            append("\n\nErrors:\n")
-                            result.errors.forEach { error ->
-                                append("• $error\n")
-                            }
-                        }
-                    }
-
-                    android.app.AlertDialog.Builder(requireContext())
-                        .setTitle("Import Failed")
-                        .setMessage(errorMessage)
-                        .setPositiveButton("OK", null)
-                        .show()
-                }
-
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Import failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnImportPurchases.isEnabled = true
-                binding.btnImportPurchases.text = "Import Purchases from Excel"
-            }
-        }
-    }
-
-    private fun showDateRangeDialogForSummaryExport() {
-        val dialogView = LayoutInflater.from(requireContext())
-            .inflate(android.R.layout.simple_list_item_2, null)
-        
-        // Create a custom dialog with date pickers
-        val calendar = Calendar.getInstance()
-        var startDate: Date? = null
-        var endDate: Date? = null
-        
-        val dialog = android.app.AlertDialog.Builder(requireContext())
-            .setTitle("Export Purchase Summary")
-            .setMessage("Select date range for export\n(Leave empty to export all)")
-            .setPositiveButton("Export All") { _, _ ->
-                exportPurchasesSummary(null, null)
-            }
-            .setNegativeButton("Cancel", null)
-            .setNeutralButton("Select Range") { _, _ ->
-                showStartDatePicker { start ->
-                    startDate = start
-                    showEndDatePicker(start) { end ->
-                        endDate = end
-                        exportPurchasesSummary(startDate, endDate)
-                    }
-                }
-            }
-            .create()
-        
-        dialog.show()
-    }
-
-    private fun showStartDatePicker(onDateSelected: (Date) -> Unit) {
-        val calendar = Calendar.getInstance()
-        val datePickerDialog = android.app.DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                calendar.set(year, month, dayOfMonth, 0, 0, 0)
-                calendar.set(Calendar.MILLISECOND, 0)
-                onDateSelected(calendar.time)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePickerDialog.setTitle("Select Start Date")
-        datePickerDialog.show()
-    }
-
-    private fun showEndDatePicker(startDate: Date, onDateSelected: (Date) -> Unit) {
-        val calendar = Calendar.getInstance()
-        calendar.time = startDate
-        
-        val datePickerDialog = android.app.DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                calendar.set(year, month, dayOfMonth, 23, 59, 59)
-                calendar.set(Calendar.MILLISECOND, 999)
-                onDateSelected(calendar.time)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePickerDialog.setTitle("Select End Date")
-        datePickerDialog.datePicker.minDate = startDate.time
-        datePickerDialog.show()
-    }
-
-    private fun exportPurchasesSummary(startDate: Date?, endDate: Date?) {
-        if (!checkAndRequestPermissions()) {
-            return
-        }
-
-        binding.btnExportPurchasesSummary.isEnabled = false
-        binding.btnExportPurchasesSummary.text = "Exporting..."
-
-        lifecycleScope.launch {
-            try {
-                val file = withContext(Dispatchers.IO) {
-                    PurchaseExcelExporter.exportPurchasesSummary(requireContext(), startDate, endDate)
-                }
-
-                val dateRangeText = if (startDate != null && endDate != null) {
-                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    "\nDate Range: ${sdf.format(startDate)} to ${sdf.format(endDate)}"
-                } else {
-                    "\nAll purchases exported"
-                }
-
-                Toast.makeText(
-                    requireContext(),
-                    "Purchase summary exported successfully!$dateRangeText\n${file.absolutePath}",
-                    Toast.LENGTH_LONG
-                ).show()
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Export failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnExportPurchasesSummary.isEnabled = true
-                binding.btnExportPurchasesSummary.text = "Export Purchase Summary to Excel"
-            }
-        }
-    }
-
-    // ==================== SALES EXPORT FUNCTIONS ====================
-
-    private fun exportSalesToExcel() {
-        if (!checkAndRequestPermissions()) {
-            return
-        }
-
-        // Show date range dialog
-        val dialog = android.app.AlertDialog.Builder(requireContext())
-            .setTitle("Export Sales")
-            .setMessage("Select date range for export\n(Leave empty to export all)")
-            .setPositiveButton("Export All") { _, _ ->
-                performSalesExport(null, null)
-            }
-            .setNegativeButton("Cancel", null)
-            .setNeutralButton("Select Range") { _, _ ->
-                showStartDatePickerForSales { start ->
-                    showEndDatePickerForSales(start) { end ->
-                        performSalesExport(start, end)
-                    }
-                }
-            }
-            .create()
-        
-        dialog.show()
-    }
-
-    private fun performSalesExport(startDate: Date?, endDate: Date?) {
-        binding.btnExportSales.isEnabled = false
-        binding.btnExportSales.text = "Exporting..."
-
-        lifecycleScope.launch {
-            try {
-                val file = withContext(Dispatchers.IO) {
-                    SaleExcelExporter.exportSales(requireContext(), startDate, endDate)
-                }
-
-                val dateRangeText = if (startDate != null && endDate != null) {
-                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    "\nDate Range: ${sdf.format(startDate)} to ${sdf.format(endDate)}"
-                } else {
-                    ""
-                }
-
-                Toast.makeText(
-                    requireContext(),
-                    "Sales exported successfully!$dateRangeText\n${file.absolutePath}",
-                    Toast.LENGTH_LONG
-                ).show()
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Export failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnExportSales.isEnabled = true
-                binding.btnExportSales.text = "Export Sales to Excel"
-            }
-        }
-    }
-
-    private fun showDateRangeDialogForSalesSummaryExport() {
-        val dialog = android.app.AlertDialog.Builder(requireContext())
-            .setTitle("Export Sale Summary")
-            .setMessage("Select date range for export\n(Leave empty to export all)")
-            .setPositiveButton("Export All") { _, _ ->
-                exportSalesSummary(null, null)
-            }
-            .setNegativeButton("Cancel", null)
-            .setNeutralButton("Select Range") { _, _ ->
-                showStartDatePickerForSales { start ->
-                    showEndDatePickerForSales(start) { end ->
-                        exportSalesSummary(start, end)
-                    }
-                }
-            }
-            .create()
-        
-        dialog.show()
-    }
-
-    private fun showStartDatePickerForSales(onDateSelected: (Date) -> Unit) {
-        val calendar = Calendar.getInstance()
-        val datePickerDialog = android.app.DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                calendar.set(year, month, dayOfMonth, 0, 0, 0)
-                calendar.set(Calendar.MILLISECOND, 0)
-                onDateSelected(calendar.time)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePickerDialog.setTitle("Select Start Date")
-        datePickerDialog.show()
-    }
-
-    private fun showEndDatePickerForSales(startDate: Date, onDateSelected: (Date) -> Unit) {
-        val calendar = Calendar.getInstance()
-        calendar.time = startDate
-        
-        val datePickerDialog = android.app.DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                calendar.set(year, month, dayOfMonth, 23, 59, 59)
-                calendar.set(Calendar.MILLISECOND, 999)
-                onDateSelected(calendar.time)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePickerDialog.setTitle("Select End Date")
-        datePickerDialog.datePicker.minDate = startDate.time
-        datePickerDialog.show()
-    }
-
-    private fun exportSalesSummary(startDate: Date?, endDate: Date?) {
-        if (!checkAndRequestPermissions()) {
-            return
-        }
-
-        binding.btnExportSalesSummary.isEnabled = false
-        binding.btnExportSalesSummary.text = "Exporting..."
-
-        lifecycleScope.launch {
-            try {
-                val file = withContext(Dispatchers.IO) {
-                    SaleExcelExporter.exportSalesSummary(requireContext(), startDate, endDate)
-                }
-
-                val dateRangeText = if (startDate != null && endDate != null) {
-                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                    "\nDate Range: ${sdf.format(startDate)} to ${sdf.format(endDate)}"
-                } else {
-                    "\nAll sales exported"
-                }
-
-                Toast.makeText(
-                    requireContext(),
-                    "Sale summary exported successfully!$dateRangeText\n${file.absolutePath}",
-                    Toast.LENGTH_LONG
-                ).show()
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Export failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnExportSalesSummary.isEnabled = true
-                binding.btnExportSalesSummary.text = "Export Sale Summary to Excel"
-            }
-        }
-    }
-
-    // Stock Report Functions
-    private fun showDateRangeDialogForStockReport() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Export Stock Summary Report")
-            .setMessage("Select time period for the report")
-            .setPositiveButton("Export All") { _, _ ->
-                exportStockSummary(null, null)
-            }
-            .setNeutralButton("Select Date Range") { _, _ ->
-                showStartDatePickerForStock { startDate ->
-                    showEndDatePickerForStock(startDate) { endDate ->
-                        exportStockSummary(startDate, endDate)
-                    }
-                }
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
-
-    private fun showStartDatePickerForStock(onDateSelected: (Date) -> Unit) {
-        val calendar = Calendar.getInstance()
-        DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                val selectedDate = Calendar.getInstance().apply {
-                    set(year, month, dayOfMonth, 0, 0, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }.time
-                onDateSelected(selectedDate)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        ).apply {
-            setTitle("Select Start Date")
-        }.show()
-    }
-
-    private fun showEndDatePickerForStock(startDate: Date, onDateSelected: (Date) -> Unit) {
-        val calendar = Calendar.getInstance()
-        val startCalendar = Calendar.getInstance().apply { time = startDate }
-        
-        DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                val selectedDate = Calendar.getInstance().apply {
-                    set(year, month, dayOfMonth, 23, 59, 59)
-                    set(Calendar.MILLISECOND, 999)
-                }.time
-                onDateSelected(selectedDate)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        ).apply {
-            setTitle("Select End Date")
-            datePicker.minDate = startCalendar.timeInMillis
-        }.show()
-    }
-
-    private fun exportStockSummary(startDate: Date?, endDate: Date?) {
-        binding.btnExportStockSummary.isEnabled = false
-        binding.btnExportStockSummary.text = "Exporting..."
-        
-        lifecycleScope.launch {
-            try {
-                val file = withContext(Dispatchers.IO) {
-                    StockReportExporter.exportStockSummary(requireContext(), startDate, endDate)
-                }
-                
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val dateRangeText = if (startDate != null && endDate != null) {
-                    " from ${dateFormat.format(startDate)} to ${dateFormat.format(endDate)}"
-                } else {
-                    " (All Time)"
-                }
-                
-                Toast.makeText(
-                    requireContext(),
-                    "Stock Summary Report$dateRangeText exported successfully to: ${file.name}",
-                    Toast.LENGTH_LONG
-                ).show()
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Export failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnExportStockSummary.isEnabled = true
-                binding.btnExportStockSummary.text = "Export Stock Summary Report"
-            }
-        }
-    }
-
-    // Out-of-Stock Report Functions
-    private fun exportOutOfStockReport() {
-        binding.btnExportOutOfStock.isEnabled = false
-        binding.btnExportOutOfStock.text = "Exporting..."
-        
-        lifecycleScope.launch {
-            try {
-                val file = withContext(Dispatchers.IO) {
-                    OutOfStockReportExporter.exportOutOfStockReport(requireContext())
-                }
-                
-                Toast.makeText(
-                    requireContext(),
-                    "Out-of-Stock Report exported successfully to: ${file.name}",
-                    Toast.LENGTH_LONG
-                ).show()
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Export failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnExportOutOfStock.isEnabled = true
-                binding.btnExportOutOfStock.text = "Export Out-of-Stock Report"
-            }
-        }
-    }
-
-    // Inventory Valuation Report Functions
-    private fun showValuationMethodDialog() {
-        val methods = arrayOf("FIFO (First In First Out)", "LIFO (Last In First Out)", "Weighted Average")
-        
-        AlertDialog.Builder(requireContext())
-            .setTitle("Select Valuation Method")
-            .setItems(methods) { _, which ->
-                val method = when (which) {
-                    0 -> ValuationMethod.FIFO
-                    1 -> ValuationMethod.LIFO
-                    2 -> ValuationMethod.WEIGHTED_AVERAGE
-                    else -> ValuationMethod.WEIGHTED_AVERAGE
-                }
-                exportInventoryValuation(method)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
-
-    private fun exportInventoryValuation(method: ValuationMethod) {
-        binding.btnExportInventoryValuation.isEnabled = false
-        binding.btnExportInventoryValuation.text = "Exporting..."
-        
-        lifecycleScope.launch {
-            try {
-                val file = withContext(Dispatchers.IO) {
-                    InventoryValuationReportExporter.exportInventoryValuation(requireContext(), method)
-                }
-                
-                Toast.makeText(
-                    requireContext(),
-                    "Inventory Valuation Report (${method.name}) exported successfully to: ${file.name}",
-                    Toast.LENGTH_LONG
-                ).show()
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Export failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnExportInventoryValuation.isEnabled = true
-                binding.btnExportInventoryValuation.text = "Export Inventory Valuation Report"
-            }
-        }
-    }
-
-    // COGS Report Functions
-    private fun showDateRangeDialogForCOGS() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Export COGS Report")
-            .setMessage("Select time period for the report")
-            .setPositiveButton("Export All") { _, _ ->
-                exportCOGSReport(null, null)
-            }
-            .setNeutralButton("Select Date Range") { _, _ ->
-                showStartDatePickerForCOGS { startDate ->
-                    showEndDatePickerForCOGS(startDate) { endDate ->
-                        exportCOGSReport(startDate, endDate)
-                    }
-                }
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
-
-    private fun showStartDatePickerForCOGS(onDateSelected: (Date) -> Unit) {
-        val calendar = Calendar.getInstance()
-        DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                val selectedDate = Calendar.getInstance().apply {
-                    set(year, month, dayOfMonth, 0, 0, 0)
-                    set(Calendar.MILLISECOND, 0)
-                }.time
-                onDateSelected(selectedDate)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        ).apply {
-            setTitle("Select Start Date")
-        }.show()
-    }
-
-    private fun showEndDatePickerForCOGS(startDate: Date, onDateSelected: (Date) -> Unit) {
-        val calendar = Calendar.getInstance()
-        val startCalendar = Calendar.getInstance().apply { time = startDate }
-        
-        DatePickerDialog(
-            requireContext(),
-            { _, year, month, dayOfMonth ->
-                val selectedDate = Calendar.getInstance().apply {
-                    set(year, month, dayOfMonth, 23, 59, 59)
-                    set(Calendar.MILLISECOND, 999)
-                }.time
-                onDateSelected(selectedDate)
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        ).apply {
-            setTitle("Select End Date")
-            datePicker.minDate = startCalendar.timeInMillis
-        }.show()
-    }
-
-    private fun exportCOGSReport(startDate: Date?, endDate: Date?) {
-        binding.btnExportCOGS.isEnabled = false
-        binding.btnExportCOGS.text = "Exporting..."
-        
-        lifecycleScope.launch {
-            try {
-                val file = withContext(Dispatchers.IO) {
-                    COGSReportExporter.exportCOGSReport(requireContext(), startDate, endDate)
-                }
-                
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val dateRangeText = if (startDate != null && endDate != null) {
-                    " from ${dateFormat.format(startDate)} to ${dateFormat.format(endDate)}"
-                } else {
-                    " (All Time)"
-                }
-                
-                Toast.makeText(
-                    requireContext(),
-                    "COGS Report$dateRangeText exported successfully to: ${file.name}",
-                    Toast.LENGTH_LONG
-                ).show()
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Export failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnExportCOGS.isEnabled = true
-                binding.btnExportCOGS.text = "Export COGS Report"
-            }
-        }
-    }
-
-    // Aging Report Functions
-    private fun exportAgingReport() {
-        binding.btnExportAgingReport.isEnabled = false
-        binding.btnExportAgingReport.text = "Exporting..."
-        
-        lifecycleScope.launch {
-            try {
-                val file = withContext(Dispatchers.IO) {
-                    AgingReportExporter.exportAgingReport(requireContext())
-                }
-                
-                Toast.makeText(
-                    requireContext(),
-                    "Inventory Aging Report exported successfully to: ${file.name}",
-                    Toast.LENGTH_LONG
-                ).show()
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Export failed: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
-                e.printStackTrace()
-            } finally {
-                binding.btnExportAgingReport.isEnabled = true
-                binding.btnExportAgingReport.text = "Export Inventory Aging Report"
-            }
-        }
-    }
-    
     private fun openBluetoothScannerSettings() {
         val intent = android.content.Intent(requireContext(), com.example.inv_5.ui.scanner.BluetoothScannerSettingsActivity::class.java)
         startActivity(intent)
+    }
+
+    // Database Backup & Restore Functions
+    private fun backupDatabase() {
+        if (!checkAndRequestPermissions()) {
+            Toast.makeText(requireContext(), "Please grant storage permission", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        binding.btnBackupDatabase.isEnabled = false
+        binding.btnBackupDatabase.text = "Backing up..."
+
+        lifecycleScope.launch {
+            try {
+                val backupFile = withContext(Dispatchers.IO) {
+                    DatabaseBackupManager.backupDatabase(requireContext())
+                }
+
+                Toast.makeText(
+                    requireContext(),
+                    "Database backed up successfully!\nFile: ${backupFile.name}\nLocation: Downloads folder",
+                    Toast.LENGTH_LONG
+                ).show()
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Backup failed: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
+            } finally {
+                binding.btnBackupDatabase.isEnabled = true
+                binding.btnBackupDatabase.text = "Backup Database"
+            }
+        }
+    }
+
+    private fun openRestoreFilePicker() {
+        if (!checkAndRequestPermissions()) {
+            Toast.makeText(requireContext(), "Please grant storage permission", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "*/*"
+            addCategory(Intent.CATEGORY_OPENABLE)
+            putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("application/octet-stream", "*/*"))
+        }
+
+        try {
+            restoreFilePickerLauncher.launch(intent)
+        } catch (e: Exception) {
+            Toast.makeText(requireContext(), "Error opening file picker: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun handleRestoreFileSelection(uri: Uri) {
+        lifecycleScope.launch {
+            try {
+                // Copy selected file to cache directory for validation
+                val tempFile = withContext(Dispatchers.IO) {
+                    val cacheDir = requireContext().cacheDir
+                    val tempFile = File(cacheDir, "temp_restore.invdb")
+                    
+                    requireContext().contentResolver.openInputStream(uri)?.use { input ->
+                        tempFile.outputStream().use { output ->
+                            input.copyTo(output)
+                        }
+                    }
+                    tempFile
+                }
+
+                // Validate the file
+                if (!DatabaseBackupManager.isValidBackupFile(tempFile)) {
+                    tempFile.delete()
+                    Toast.makeText(
+                        requireContext(),
+                        "Invalid backup file. Please select a .invdb file",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@launch
+                }
+
+                // Show file details and confirmation dialog
+                val fileSize = DatabaseBackupManager.formatFileSize(tempFile.length())
+                
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Restore Database")
+                    .setMessage(
+                        "Are you sure you want to restore?\n\n" +
+                        "File: ${tempFile.name}\n" +
+                        "Size: $fileSize\n\n" +
+                        "⚠️ WARNING: This will replace all current data!"
+                    )
+                    .setPositiveButton("OK") { _, _ ->
+                        performRestore(tempFile)
+                    }
+                    .setNegativeButton("Cancel") { dialog, _ ->
+                        tempFile.delete()
+                        dialog.dismiss()
+                    }
+                    .setOnDismissListener {
+                        if (tempFile.exists()) {
+                            tempFile.delete()
+                        }
+                    }
+                    .show()
+
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Error reading file: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun performRestore(backupFile: File) {
+        binding.btnRestoreDatabase.isEnabled = false
+        binding.btnRestoreDatabase.text = "Restoring..."
+
+        lifecycleScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    DatabaseBackupManager.restoreDatabase(requireContext(), backupFile)
+                }
+
+                Toast.makeText(
+                    requireContext(),
+                    "Database restored successfully!\nApp will restart...",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                // Restart the app to reload the restored database
+                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                    val intent = requireActivity().packageManager.getLaunchIntentForPackage(requireContext().packageName)
+                    if (intent != null) {
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                        requireActivity().finish()
+                        Runtime.getRuntime().exit(0)
+                    }
+                }, 2000)
+
+            } catch (e: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Restore failed: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+                e.printStackTrace()
+            } finally {
+                backupFile.delete()
+                binding.btnRestoreDatabase.isEnabled = true
+                binding.btnRestoreDatabase.text = "Restore Database"
+            }
+        }
     }
 
     override fun onDestroyView() {

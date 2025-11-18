@@ -102,4 +102,11 @@
     <color name="orange">#FF9800</color>
     <color name="gray">#757575</color>
     <color name="colorPrimary">#6200EE</color>
+
+    <!-- Brand-specific icon accents -->
+    <color name="stocksmart_icon_background">#03142E</color>
+    <color name="stocksmart_icon_inner_glow">#0A2E63</color>
+    <color name="stocksmart_icon_brand_s">#A7D4FF</color>
+    <color name="stocksmart_icon_chart_bar">#6FE3B1</color>
+    <color name="stocksmart_icon_chart_line">#8AF4C8</color>
 </resources>
