@@ -33,6 +33,7 @@ class HomeFragment : Fragment() {
         
         setupRecyclerView()
         setupCardClicks()
+        setupQuickAccessCards()
         setupQuickActions()
         setupSwipeRefresh()
         observeViewModel()
@@ -61,6 +62,28 @@ class HomeFragment : Fragment() {
         // TODO: Add date filter for this week in future
         binding.cardWeekPurchases.setOnClickListener {
             findNavController().navigate(R.id.nav_purchases)
+        }
+    }
+
+    private fun setupQuickAccessCards() {
+        // All Products card - Navigate to Products screen
+        binding.cardAllProducts.setOnClickListener {
+            findNavController().navigate(R.id.nav_products)
+        }
+        
+        // Reports card - Navigate to Reports screen
+        binding.cardReports.setOnClickListener {
+            findNavController().navigate(R.id.nav_reports)
+        }
+        
+        // Expenses card - Placeholder (future feature)
+        binding.cardExpenses.setOnClickListener {
+            Toast.makeText(requireContext(), "Expenses tracking coming soon", Toast.LENGTH_SHORT).show()
+        }
+        
+        // Scan Barcode card - Open Barcode Scanner Settings
+        binding.cardScanBarcode.setOnClickListener {
+            startActivity(Intent(requireContext(), com.example.inv_5.ui.scanner.BluetoothScannerSettingsActivity::class.java))
         }
     }
 
