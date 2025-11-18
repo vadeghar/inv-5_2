@@ -31,11 +31,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this)[HomeViewModel::class.java]
         
-        setupRecyclerView()
-        setupCardClicks()
-        setupQuickAccessCards()
-        setupQuickActions()
-        setupSwipeRefresh()
+    setupRecyclerView()
+    setupCardClicks()
+    setupQuickAccessCards()
+    setupSwipeRefresh()
         observeViewModel()
         
         return binding.root
@@ -85,6 +84,31 @@ class HomeFragment : Fragment() {
         binding.cardScanBarcode.setOnClickListener {
             startActivity(Intent(requireContext(), com.example.inv_5.ui.scanner.BluetoothScannerSettingsActivity::class.java))
         }
+
+        // New Purchase card - start AddPurchaseActivity
+        binding.cardNewPurchase.setOnClickListener {
+            startActivity(Intent(requireContext(), AddPurchaseActivity::class.java))
+        }
+
+        // New Sale card - start AddSaleActivity
+        binding.cardNewSale.setOnClickListener {
+            startActivity(Intent(requireContext(), AddSaleActivity::class.java))
+        }
+
+        // Customers card - Navigate to Customers screen
+        binding.cardCustomers.setOnClickListener {
+            findNavController().navigate(R.id.nav_customers)
+        }
+
+        // Suppliers card - Navigate to Vendors (Suppliers) screen
+        binding.cardSuppliers.setOnClickListener {
+            findNavController().navigate(R.id.nav_vendors)
+        }
+
+        // Settings card - Navigate to Settings screen
+        binding.cardSettings.setOnClickListener {
+            findNavController().navigate(R.id.nav_settings)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -103,20 +127,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun setupQuickActions() {
-        binding.btnNewPurchase.setOnClickListener {
-            startActivity(Intent(requireContext(), AddPurchaseActivity::class.java))
-        }
-        
-        binding.btnNewSale.setOnClickListener {
-            startActivity(Intent(requireContext(), AddSaleActivity::class.java))
-        }
-        
-        binding.btnViewProducts.setOnClickListener {
-            // Navigate to products tab - handled by bottom navigation
-            Toast.makeText(requireContext(), "Navigate to Products tab", Toast.LENGTH_SHORT).show()
-        }
-    }
+    // Removed old Quick Actions / Bottom action row handlers in favor of card-based actions
 
     private fun setupSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
