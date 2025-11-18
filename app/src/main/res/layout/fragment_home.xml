@@ -56,6 +56,14 @@
                         android:gravity="center"
                         android:padding="12dp">
 
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_shopping_cart"
+                            android:contentDescription="Purchases Icon"
+                            app:tint="#1976D2"
+                            android:layout_marginBottom="4dp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -71,7 +79,7 @@
                             android:textSize="32sp"
                             android:textStyle="bold"
                             android:textColor="#1976D2"
-                            android:layout_marginTop="8dp" />
+                            android:layout_marginTop="4dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -97,6 +105,14 @@
                         android:gravity="center"
                         android:padding="12dp">
 
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_sell"
+                            android:contentDescription="Sales Icon"
+                            app:tint="#388E3C"
+                            android:layout_marginBottom="4dp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -112,7 +128,7 @@
                             android:textSize="32sp"
                             android:textStyle="bold"
                             android:textColor="#388E3C"
-                            android:layout_marginTop="8dp" />
+                            android:layout_marginTop="4dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -138,6 +154,14 @@
                         android:gravity="center"
                         android:padding="12dp">
 
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_inventory"
+                            android:contentDescription="Out of Stock Icon"
+                            app:tint="#D32F2F"
+                            android:layout_marginBottom="4dp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -153,7 +177,7 @@
                             android:textSize="32sp"
                             android:textStyle="bold"
                             android:textColor="#D32F2F"
-                            android:layout_marginTop="8dp" />
+                            android:layout_marginTop="4dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -179,6 +203,14 @@
                         android:gravity="center"
                         android:padding="12dp">
 
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_calendar_today"
+                            android:contentDescription="Week Purchases Icon"
+                            app:tint="#F57C00"
+                            android:layout_marginBottom="4dp" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -194,7 +226,7 @@
                             android:textSize="32sp"
                             android:textStyle="bold"
                             android:textColor="#F57C00"
-                            android:layout_marginTop="8dp" />
+                            android:layout_marginTop="4dp" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
