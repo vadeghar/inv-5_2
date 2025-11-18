@@ -43,7 +43,39 @@ interface PurchaseItemDao {
         startDate: Long,
         endDate: Long
     ): List<PurchaseItemWithDocument>
+
+    // Dashboard queries
+    @Query("""
+        SELECT SUM(pi.total) 
+        FROM purchase_items pi
+        INNER JOIN purchases p ON pi.purchaseId = p.id
+        WHERE DATE(p.addedDate/1000, 'unixepoch') = DATE('now')
+    """)
+    suspend fun getTodayPurchaseValue(): Double?
+
+    @Query("""
+        SELECT SUM(pi.quantity) 
+        FROM purchase_items pi
+        INNER JOIN purchases p ON pi.purchaseId = p.id
+        WHERE pi.productId = :productId
+    """)
+    suspend fun getTotalPurchasedQuantity(productId: String): Int?
+
+    @Query("""
+        SELECT DATE(p.addedDate/1000, 'unixepoch') as date, SUM(pi.quantity) as totalQuantity
+        FROM purchase_items pi
+        INNER JOIN purchases p ON pi.purchaseId = p.id
+        WHERE p.addedDate >= :startDate
+        GROUP BY date
+        ORDER BY date ASC
+    """)
+    suspend fun getDailyPurchaseQuantities(startDate: Long): List<DailyStockMovement>
 }
+
+data class DailyStockMovement(
+    val date: String,
+    val totalQuantity: Int
+)
 
 /**
  * Data class to hold purchase item with document details

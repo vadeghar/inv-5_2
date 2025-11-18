@@ -25,4 +25,29 @@ interface PurchaseDao {
 
     @Query("SELECT COUNT(*) FROM purchases")
     suspend fun getCount(): Int
+
+    // Dashboard queries
+    @Query("SELECT * FROM purchases ORDER BY addedDate DESC LIMIT :limit")
+    suspend fun getRecentPurchases(limit: Int = 5): List<Purchase>
+
+    @Query("SELECT COUNT(*) FROM purchases WHERE DATE(addedDate/1000, 'unixepoch') = DATE('now')")
+    suspend fun getTodayPurchaseCount(): Int
+
+    @Query("SELECT COUNT(*) FROM purchases WHERE DATE(addedDate/1000, 'unixepoch') >= DATE('now', '-7 days')")
+    suspend fun getWeekPurchaseCount(): Int
+
+    @Query("SELECT COUNT(*) FROM purchases WHERE strftime('%Y-%m', addedDate/1000, 'unixepoch') = strftime('%Y-%m', 'now')")
+    suspend fun getMonthPurchaseCount(): Int
+
+    @Query("SELECT * FROM purchases WHERE addedDate >= :startDate AND addedDate <= :endDate ORDER BY addedDate ASC")
+    suspend fun getPurchasesByDateRange(startDate: Long, endDate: Long): List<Purchase>
+
+    @Query("SELECT DATE(addedDate/1000, 'unixepoch') as date, COUNT(*) as count, SUM(totalAmount) as total FROM purchases WHERE addedDate >= :startDate GROUP BY date ORDER BY date ASC")
+    suspend fun getDailyPurchaseTotals(startDate: Long): List<DailyTotal>
 }
+
+data class DailyTotal(
+    val date: String,
+    val count: Int,
+    val total: Double
+)

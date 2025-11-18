@@ -53,4 +53,28 @@ interface ProductDao {
 
     @Query("SELECT * FROM products ORDER BY name ASC")
     suspend fun listAll(): List<Product>
+
+    // Dashboard queries
+    @Query("SELECT COUNT(*) FROM products")
+    suspend fun getTotalProducts(): Int
+
+    @Query("SELECT COUNT(*) FROM products WHERE isActive = 1")
+    suspend fun getActiveProducts(): Int
+
+    @Query("SELECT COUNT(*) FROM products WHERE quantityOnHand <= reorderPoint AND reorderPoint > 0")
+    suspend fun getLowStockCount(): Int
+
+    @Query("SELECT COUNT(*) FROM products WHERE quantityOnHand = 0")
+    suspend fun getOutOfStockCount(): Int
+
+    @Query("SELECT SUM(quantityOnHand * salePrice) FROM products WHERE quantityOnHand > 0")
+    suspend fun getTotalInventoryValue(): Double?
+
+    @Query("""
+        SELECT * FROM products 
+        WHERE quantityOnHand > 0 
+        ORDER BY quantityOnHand * salePrice DESC 
+        LIMIT :limit
+    """)
+    suspend fun getTopProductsByValue(limit: Int = 5): List<Product>
 }

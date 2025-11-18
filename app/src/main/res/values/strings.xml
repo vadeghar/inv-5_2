@@ -16,4 +16,6 @@
     <string name="menu_customers">Customers</string>
     <string name="menu_reports">Reports</string>
     <string name="add_purchase_item">Add Purchase Item</string>
+    <string name="metric_icon">Metric Icon</string>
+    <string name="activity_icon">Activity Icon</string>
 </resources>

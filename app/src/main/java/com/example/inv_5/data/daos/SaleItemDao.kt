@@ -43,7 +43,31 @@ interface SaleItemDao {
         startDate: Long,
         endDate: Long
     ): List<SaleItemWithDocument>
+
+    // Dashboard queries
+    @Query("""
+        SELECT SUM(si.quantity) 
+        FROM sale_items si
+        INNER JOIN sales s ON si.saleId = s.id
+        WHERE si.productId = :productId
+    """)
+    suspend fun getTotalSoldQuantity(productId: String): Int?
+
+    @Query("""
+        SELECT DATE(s.addedDate/1000, 'unixepoch') as date, SUM(si.quantity) as totalQuantity
+        FROM sale_items si
+        INNER JOIN sales s ON si.saleId = s.id
+        WHERE s.addedDate >= :startDate
+        GROUP BY date
+        ORDER BY date ASC
+    """)
+    suspend fun getDailySaleQuantities(startDate: Long): List<DailySaleMovement>
 }
+
+data class DailySaleMovement(
+    val date: String,
+    val totalQuantity: Int
+)
 
 /**
  * Data class to hold sale item with document details
