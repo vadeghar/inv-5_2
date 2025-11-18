@@ -502,6 +502,14 @@ class AddPurchaseActivity : AppCompatActivity() {
         val dialog = AlertDialog.Builder(this)
             .setView(dialogBinding.root)
             .create()
+        
+        // Set window layout params to ensure proper centering
+        dialog.window?.setLayout(
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        )
+        dialog.window?.setGravity(android.view.Gravity.CENTER)
+        
         dialog.show()
         
         // Register Bluetooth scanner listener for this dialog
