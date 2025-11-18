@@ -7,8 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.inv_5.R
 import com.example.inv_5.data.entities.Supplier
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.chip.Chip
+
 
 class SuppliersAdapter(
     private var items: List<Supplier>,
@@ -22,13 +21,11 @@ class SuppliersAdapter(
         val phone: TextView = view.findViewById(R.id.phoneTextView)
         val email: TextView = view.findViewById(R.id.emailTextView)
         val address: TextView = view.findViewById(R.id.addressTextView)
-        val status: Chip = view.findViewById(R.id.statusTextView)
-        val btnEdit: MaterialButton = view.findViewById(R.id.btnEdit)
-        val btnDelete: MaterialButton = view.findViewById(R.id.btnDelete)
+        val status: TextView = view.findViewById(R.id.statusTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_supplier, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_supplier_card, parent, false)
         return VH(v)
     }
 
@@ -36,34 +33,11 @@ class SuppliersAdapter(
         val supplier = items[position]
         
         holder.supplierName.text = supplier.name
-        holder.contactPerson.text = if (!supplier.contactPerson.isNullOrEmpty()) {
-            "Contact: ${supplier.contactPerson}"
-        } else {
-            "Contact: N/A"
-        }
-        holder.phone.text = if (!supplier.phone.isNullOrEmpty()) {
-            "Phone: ${supplier.phone}"
-        } else {
-            "Phone: N/A"
-        }
-        holder.email.text = if (!supplier.email.isNullOrEmpty()) {
-            "Email: ${supplier.email}"
-        } else {
-            "Email: N/A"
-        }
-        holder.address.text = if (!supplier.address.isNullOrEmpty()) {
-            "Address: ${supplier.address}"
-        } else {
-            "Address: N/A"
-        }
-        
+        holder.contactPerson.text = supplier.contactPerson ?: "N/A"
+        holder.phone.text = supplier.phone ?: "N/A"
+        holder.email.text = supplier.email ?: "N/A"
+        holder.address.text = supplier.address ?: "N/A"
         holder.status.text = if (supplier.isActive) "Active" else "Inactive"
-        holder.status.setChipBackgroundColorResource(
-            if (supplier.isActive) R.color.purple_200 else android.R.color.darker_gray
-        )
-        
-        holder.btnEdit.setOnClickListener { onEditClick(supplier) }
-        holder.btnDelete.setOnClickListener { onDeleteClick(supplier) }
     }
 
     override fun getItemCount(): Int = items.size

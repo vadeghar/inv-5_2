@@ -12,7 +12,7 @@
     <string name="menu_products">Products</string>
     <string name="menu_sales">Sales</string>
     <string name="menu_stock_management">Stock Management</string>
-    <string name="menu_vendors">Vendors</string>
+    <string name="menu_vendors">Suppliers</string>
     <string name="menu_customers">Customers</string>
     <string name="menu_reports">Reports</string>
     <string name="add_purchase_item">Add Purchase Item</string>

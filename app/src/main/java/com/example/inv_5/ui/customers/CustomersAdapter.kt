@@ -1,10 +1,12 @@
 package com.example.inv_5.ui.customers
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.inv_5.R
 import com.example.inv_5.data.entities.Customer
-import com.example.inv_5.databinding.ItemCustomerBinding
 
 class CustomersAdapter(
     private val onEditClick: (Customer) -> Unit,
@@ -13,45 +15,30 @@ class CustomersAdapter(
 
     private var customers = listOf<Customer>()
 
-    inner class CustomerViewHolder(private val binding: ItemCustomerBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(customer: Customer) {
-            binding.apply {
-                tvCustomerName.text = customer.name
-                tvContactPerson.text = "Contact: ${customer.contactPerson ?: "N/A"}"
-                tvPhone.text = "Phone: ${customer.phone ?: "N/A"}"
-                tvEmail.text = "Email: ${customer.email ?: "N/A"}"
-                tvAddress.text = "Address: ${customer.address ?: "N/A"}"
-                
-                chipStatus.text = if (customer.isActive) "Active" else "Inactive"
-                chipStatus.setChipBackgroundColorResource(
-                    if (customer.isActive) android.R.color.holo_green_dark
-                    else android.R.color.darker_gray
-                )
-
-                btnEdit.setOnClickListener {
-                    onEditClick(customer)
-                }
-
-                btnDelete.setOnClickListener {
-                    onDeleteClick(customer)
-                }
-            }
-        }
+    class CustomerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val customerName: TextView = view.findViewById(R.id.customerNameTextView)
+        val contactPerson: TextView = view.findViewById(R.id.contactPersonTextView)
+        val phone: TextView = view.findViewById(R.id.phoneTextView)
+        val email: TextView = view.findViewById(R.id.emailTextView)
+        val address: TextView = view.findViewById(R.id.addressTextView)
+        val status: TextView = view.findViewById(R.id.statusTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomerViewHolder {
-        val binding = ItemCustomerBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return CustomerViewHolder(binding)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_customer_card, parent, false)
+        return CustomerViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: CustomerViewHolder, position: Int) {
-        holder.bind(customers[position])
+        val customer = customers[position]
+        
+        holder.customerName.text = customer.name
+        holder.contactPerson.text = customer.contactPerson ?: "N/A"
+        holder.phone.text = customer.phone ?: "N/A"
+        holder.email.text = customer.email ?: "N/A"
+        holder.address.text = customer.address ?: "N/A"
+        holder.status.text = if (customer.isActive) "Active" else "Inactive"
     }
 
     override fun getItemCount(): Int = customers.size

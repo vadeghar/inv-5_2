@@ -1,93 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/light_gray_background"
     tools:context=".ui.vendors.VendorsFragment">
 
-    <!-- Header with Title and Add Button -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingBottom="16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="?attr/colorSurface">
 
-        <TextView
-            android:layout_width="0dp"
+        <!-- Search Bar -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Suppliers"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@color/dark_charcoal_text" />
+            android:background="@color/surface_light_gray"
+            android:layout_marginBottom="12dp"
+            app:iconifiedByDefault="false"
+            app:queryHint="Search suppliers..." />
 
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.App.MaterialButton.Filled"
-            android:id="@+id/addSupplierButton"
-            android:layout_width="wrap_content"
+        <!-- Suppliers List -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/suppliersRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Pagination Controls -->
+        <LinearLayout
+            android:id="@+id/pagingControls"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="+ Add Supplier" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="8dp">
+
+            <ImageButton
+                android:id="@+id/prevButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_back"
+                android:contentDescription="Previous Page"
+                android:tint="@color/primary_navy_blue" />
+
+            <ImageButton
+                android:id="@+id/nextButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="24dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_arrow_back"
+                android:rotation="180"
+                android:contentDescription="Next Page"
+                android:tint="@color/primary_navy_blue" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <!-- Search Bar -->
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addSupplierFab"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_marginBottom="12dp"
-        app:iconifiedByDefault="false"
-        app:queryHint="Search suppliers..." />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:contentDescription="Add Supplier"
+        android:src="@drawable/ic_add_white"
+        app:tint="@color/white"
+        app:backgroundTint="@color/accent_green" />
 
-    <!-- Suppliers List -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/suppliersRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/white" />
-
-    <!-- Pagination Controls -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="8dp">
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.App.MaterialButton.Outlined"
-            android:id="@+id/prevButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Previous" />
-
-        <Space
-            android:layout_width="16dp"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.button.MaterialButton
-            style="@style/Widget.App.MaterialButton.Outlined"
-            android:id="@+id/nextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Next" />
-
-    </LinearLayout>
-
-    <!-- Back Home Button -->
-    <com.google.android.material.button.MaterialButton
-        style="@style/Widget.App.MaterialButton.Outlined"
-        android:id="@+id/backHomeButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Back to Home" />
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

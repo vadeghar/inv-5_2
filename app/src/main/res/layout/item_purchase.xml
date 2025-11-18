@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="#"
-        android:textColor="@color/dark_charcoal_text" />
+        android:textColor="?android:attr/textColorPrimary" />
 
     <TextView
         android:id="@+id/productNameTextView"
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="2"
         android:text="Product Name"
-        android:textColor="@color/dark_charcoal_text" />
+        android:textColor="?android:attr/textColorPrimary" />
 
     <TextView
         android:id="@+id/barcodeTextView"
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Barcode"
-        android:textColor="@color/dark_charcoal_text" />
+        android:textColor="?android:attr/textColorPrimary" />
 
     <TextView
         android:id="@+id/quantityTextView"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Qty"
-        android:textColor="@color/dark_charcoal_text" />
+        android:textColor="?android:attr/textColorPrimary" />
 
     <TextView
         android:id="@+id/mrpTextView"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="MRP"
-        android:textColor="@color/dark_charcoal_text" />
+        android:textColor="?android:attr/textColorPrimary" />
 
     <TextView
         android:id="@+id/salePriceTextView"
@@ -51,6 +51,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Sale"
-        android:textColor="@color/dark_charcoal_text" />
+        android:textColor="?android:attr/textColorPrimary" />
 
 </LinearLayout>

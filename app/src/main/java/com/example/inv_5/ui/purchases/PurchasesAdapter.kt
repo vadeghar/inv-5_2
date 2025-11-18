@@ -16,26 +16,26 @@ class PurchasesAdapter(
 ) : RecyclerView.Adapter<PurchasesAdapter.VH>() {
 
     class VH(view: View) : RecyclerView.ViewHolder(view) {
-        val number: TextView = view.findViewById(R.id.colNumber)
-        val vendor: TextView = view.findViewById(R.id.colVendor)
-        val invoice: TextView = view.findViewById(R.id.colInvoice)
-        val date: TextView = view.findViewById(R.id.colDate)
-        val amount: TextView = view.findViewById(R.id.colAmount)
+        val vendorName: TextView = view.findViewById(R.id.vendorNameTextView)
+        val invoiceNumber: TextView = view.findViewById(R.id.invoiceNumberTextView)
+        val date: TextView = view.findViewById(R.id.dateTextView)
+        val quantity: TextView = view.findViewById(R.id.quantityTextView)
+        val totalAmount: TextView = view.findViewById(R.id.totalAmountTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_purchase_row, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_purchase_card, parent, false)
         return VH(v)
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val p = items[position]
-        holder.number.text = p.id
-        holder.vendor.text = p.vendor
-        holder.invoice.text = p.invoiceNo
-        val fmt = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
+        holder.vendorName.text = p.vendor
+        holder.invoiceNumber.text = p.invoiceNo
+        val fmt = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.date.text = fmt.format(p.invoiceDate)
-        holder.amount.text = String.format(Locale.getDefault(), "%.2f", p.totalAmount)
+        holder.quantity.text = p.totalQty.toString()
+        holder.totalAmount.text = String.format(Locale.getDefault(), "₹%.2f", p.totalAmount)
         holder.itemView.setOnClickListener { onClick(p) }
     }
 

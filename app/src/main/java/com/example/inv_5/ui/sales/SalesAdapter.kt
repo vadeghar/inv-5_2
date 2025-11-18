@@ -3,6 +3,7 @@ package com.example.inv_5.ui.sales
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.inv_5.R
@@ -16,26 +17,31 @@ class SalesAdapter(
 ) : RecyclerView.Adapter<SalesAdapter.VH>() {
 
     class VH(view: View) : RecyclerView.ViewHolder(view) {
-        val number: TextView = view.findViewById(R.id.colNumber)
-        val customer: TextView = view.findViewById(R.id.colCustomer)
-        val phone: TextView = view.findViewById(R.id.colPhone)
-        val date: TextView = view.findViewById(R.id.colDate)
-        val amount: TextView = view.findViewById(R.id.colAmount)
+        val customerName: TextView = view.findViewById(R.id.customerNameTextView)
+        val invoiceLayout: LinearLayout = view.findViewById(R.id.invoiceLayout)
+        val invoiceNumber: TextView = view.findViewById(R.id.invoiceNumberTextView)
+        val date: TextView = view.findViewById(R.id.dateTextView)
+        val quantity: TextView = view.findViewById(R.id.quantityTextView)
+        val totalAmount: TextView = view.findViewById(R.id.totalAmountTextView)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_sale_row, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_sale_card, parent, false)
         return VH(v)
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val s = items[position]
-        holder.number.text = s.id
-        holder.customer.text = s.customerName
-        holder.phone.text = s.customerPhone
-        val fmt = SimpleDateFormat("d/M/yyyy", Locale.getDefault())
+        holder.customerName.text = s.customerName
+        
+        // Handle invoice number - hide layout if empty
+        // Since Sale entity doesn't have invoiceNo field, we'll hide it for now
+        holder.invoiceLayout.visibility = View.GONE
+        
+        val fmt = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         holder.date.text = fmt.format(s.saleDate)
-        holder.amount.text = String.format(Locale.getDefault(), "%.2f", s.totalAmount)
+        holder.quantity.text = s.totalQty.toString()
+        holder.totalAmount.text = String.format(Locale.getDefault(), "₹%.2f", s.totalAmount)
         holder.itemView.setOnClickListener { onClick(s) }
     }
 

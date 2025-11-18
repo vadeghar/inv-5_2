@@ -2,6 +2,7 @@ package com.example.inv_5
 
 import android.os.Bundle
 import android.view.Menu
+import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -38,6 +39,33 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        
+        // Handle new menu items that don't have fragments yet
+        navView.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_documents -> {
+                    Toast.makeText(this, "Documents feature coming soon", Toast.LENGTH_SHORT).show()
+                    drawerLayout.closeDrawers()
+                    true
+                }
+                R.id.nav_expenses -> {
+                    Toast.makeText(this, "Expenses feature coming soon", Toast.LENGTH_SHORT).show()
+                    drawerLayout.closeDrawers()
+                    true
+                }
+                R.id.nav_scan_barcode -> {
+                    Toast.makeText(this, "Barcode scanner feature coming soon", Toast.LENGTH_SHORT).show()
+                    drawerLayout.closeDrawers()
+                    true
+                }
+                else -> {
+                    // Let NavController handle other menu items
+                    navController.navigate(menuItem.itemId)
+                    drawerLayout.closeDrawers()
+                    true
+                }
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

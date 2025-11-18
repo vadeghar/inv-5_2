@@ -48,12 +48,8 @@ class VendorsFragment : Fragment() {
         binding.suppliersRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.suppliersRecyclerView.adapter = adapter
 
-        binding.backHomeButton.setOnClickListener {
-            findNavController().navigate(R.id.nav_home)
-        }
-
-        // Add Supplier Button
-        binding.addSupplierButton.setOnClickListener {
+        // Add Supplier FAB
+        binding.addSupplierFab.setOnClickListener {
             showAddSupplierDialog()
         }
 

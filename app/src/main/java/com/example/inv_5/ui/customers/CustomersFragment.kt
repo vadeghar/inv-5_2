@@ -2,8 +2,6 @@ package com.example.inv_5.ui.customers
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,30 +55,37 @@ class CustomersFragment : Fragment() {
             onEditClick = { customer -> showEditCustomerDialog(customer) },
             onDeleteClick = { customer -> confirmDeleteCustomer(customer) }
         )
+        binding.customersRecyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(requireContext())
         binding.customersRecyclerView.adapter = customersAdapter
     }
 
     private fun setupSearchBar() {
-        binding.searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable?) {
-                currentSearchQuery = s?.toString() ?: ""
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                currentSearchQuery = query ?: ""
                 currentPage = 0
                 loadPage()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                currentSearchQuery = newText ?: ""
+                currentPage = 0
+                loadPage()
+                return true
             }
         })
     }
 
     private fun setupPagination() {
-        binding.btnPrevPage.setOnClickListener {
+        binding.prevButton.setOnClickListener {
             if (currentPage > 0) {
                 currentPage--
                 loadPage()
             }
         }
 
-        binding.btnNextPage.setOnClickListener {
+        binding.nextButton.setOnClickListener {
             if (currentPage < totalPages - 1) {
                 currentPage++
                 loadPage()
@@ -106,21 +111,14 @@ class CustomersFragment : Fragment() {
 
             customersAdapter.setItems(customers)
             
-            // Update pagination info
+            // Update pagination
             totalPages = if (customers.size < pageSize) currentPage + 1 else currentPage + 2
-            binding.tvPageInfo.text = "Page ${currentPage + 1} of $totalPages"
-            binding.btnPrevPage.isEnabled = currentPage > 0
-            binding.btnNextPage.isEnabled = customers.size == pageSize
             
-            // Show/hide empty view
-            if (customers.isEmpty()) {
-                binding.customersRecyclerView.visibility = View.GONE
-                binding.emptyView.visibility = View.VISIBLE
-                binding.paginationLayout.visibility = View.GONE
-            } else {
-                binding.customersRecyclerView.visibility = View.VISIBLE
-                binding.emptyView.visibility = View.GONE
-                binding.paginationLayout.visibility = View.VISIBLE
+            // Disable/enable pagination buttons
+            if (customers.isEmpty() && currentPage > 0) {
+                currentPage--
+                Toast.makeText(requireContext(), "No more records", Toast.LENGTH_SHORT).show()
+                return@launch
             }
         }
     }
