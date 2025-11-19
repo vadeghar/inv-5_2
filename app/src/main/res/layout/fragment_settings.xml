@@ -16,13 +16,333 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+        <!-- General Settings Section -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="24dp">
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="General Settings"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/tvAppTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="App Theme"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvLanguageSelection"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Language Selection"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvCurrencyFormat"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Currency Format"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvDateNumberFormat"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Date &amp; Number Format"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Inventory Settings Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Inventory Settings"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/tvDefaultLowStockThreshold"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Default Low-Stock Threshold"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvLowStockAlerts"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Low-Stock Alerts"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvDefaultTaxSettings"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Default Tax Settings (GST %, etc.)"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Security Settings Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Security Settings"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/tvAppLock"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="App Lock"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvAutoLockTimer"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Auto-Lock Timer"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvRequirePinOnStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Require PIN on App Start"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Notifications Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Notifications"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/tvStockAlerts"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Stock Alerts"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvDailySummaryNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Daily Summary Notification"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Barcode Scanner Configuration Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,13 +379,13 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Data Management Section -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="24dp">
+            android:layout_marginBottom="16dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -115,7 +435,189 @@
                     android:text="⚠️ Warning: Restoring will replace all current data with the backup file. This action cannot be undone."
                     android:textSize="12sp"
                     android:textColor="@color/red_error"
-                    android:layout_marginTop="4dp" />
+                    android:layout_marginBottom="16dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp" />
+
+                <TextView
+                    android:id="@+id/tvClearCache"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Clear Cache"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvResetDemoData"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Reset Demo Data"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvFactoryReset"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Factory Reset (Clear all data)"
+                    android:textSize="16sp"
+                    android:textColor="@color/red_error"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- About Section -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="About"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/tvAppVersion"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="App Version"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvDeveloperInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Developer Info"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvPrivacyPolicy"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Privacy Policy"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvTermsOfUse"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Terms of Use"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/darker_gray"
+                    android:alpha="0.2" />
+
+                <TextView
+                    android:id="@+id/tvRateApp"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:text="Rate App"
+                    android:textSize="16sp"
+                    android:textColor="@color/dark_charcoal_text"
+                    android:gravity="center_vertical"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:drawableEnd="@android:drawable/ic_menu_info_details"
+                    android:drawablePadding="8dp" />
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
