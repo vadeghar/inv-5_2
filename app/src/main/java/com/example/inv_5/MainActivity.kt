@@ -59,11 +59,6 @@ class MainActivity : AppCompatActivity() {
                     drawerLayout.closeDrawers()
                     true
                 }
-                R.id.nav_expenses -> {
-                    Toast.makeText(this, "Expenses feature coming soon", Toast.LENGTH_SHORT).show()
-                    drawerLayout.closeDrawers()
-                    true
-                }
                 R.id.nav_scan_barcode -> {
                     Toast.makeText(this, "Barcode scanner feature coming soon", Toast.LENGTH_SHORT).show()
                     drawerLayout.closeDrawers()

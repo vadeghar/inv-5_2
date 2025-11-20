@@ -10,6 +10,7 @@ import com.example.inv_5.data.database.DatabaseProvider
 import com.example.inv_5.data.entities.Product
 import com.example.inv_5.data.entities.Purchase
 import com.example.inv_5.data.entities.PurchaseItem
+import com.example.inv_5.data.repository.ActivityLogRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -19,6 +20,7 @@ class AddPurchaseViewModel(application: Application) : AndroidViewModel(applicat
     private val purchaseDao = db.purchaseDao()
     private val purchaseItemDao = db.purchaseItemDao()
     private val productDao = db.productDao()
+    private val activityLogRepo = ActivityLogRepository(application)
 
     // helper to find products by barcode (may return multiple MRPs)
     suspend fun findProductsByBarcode(barcode: String) = productDao.getByBarcode(barcode)
@@ -91,6 +93,15 @@ class AddPurchaseViewModel(application: Application) : AndroidViewModel(applicat
 
                         purchaseItemDao.insertPurchaseItem(item)
                     }
+                }
+
+                // Log activity
+                val totalAmount = purchaseItems.sumOf { it.total }
+                val isUpdate = purchaseDao.getById(purchase.id) != null
+                if (isUpdate) {
+                    activityLogRepo.logPurchaseUpdated(purchase, totalAmount)
+                } else {
+                    activityLogRepo.logPurchaseAdded(purchase, totalAmount)
                 }
 
                 saveStatus.postValue("success")

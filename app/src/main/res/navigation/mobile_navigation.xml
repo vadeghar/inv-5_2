@@ -54,6 +54,18 @@
         tools:layout="@layout/fragment_customers" />
 
     <fragment
+        android:id="@+id/nav_expenses"
+        android:name="com.example.inv_5.ui.expenses.ExpensesFragment"
+        android:label="Expenses"
+        tools:layout="@layout/fragment_expenses" />
+
+    <fragment
+        android:id="@+id/nav_activity_log"
+        android:name="com.example.inv_5.ui.activity.ActivityLogFragment"
+        android:label="Activity Log"
+        tools:layout="@layout/fragment_activity_log" />
+
+    <fragment
         android:id="@+id/nav_reports"
         android:name="com.example.inv_5.ui.reports.ReportsFragment"
         android:label="@string/menu_reports"

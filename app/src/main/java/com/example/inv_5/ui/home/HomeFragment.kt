@@ -75,9 +75,9 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.nav_reports)
         }
         
-        // Expenses card - Placeholder (future feature)
+        // Expenses card - Navigate to Expenses
         binding.cardExpenses.setOnClickListener {
-            Toast.makeText(requireContext(), "Expenses tracking coming soon", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.nav_expenses)
         }
         
         // Scan Barcode card - Open Barcode Scanner Settings
@@ -108,6 +108,11 @@ class HomeFragment : Fragment() {
         // Settings card - Navigate to Settings screen
         binding.cardSettings.setOnClickListener {
             findNavController().navigate(R.id.nav_settings)
+        }
+        
+        // View All Activities - Navigate to Activity Log
+        binding.tvViewAllActivities.setOnClickListener {
+            findNavController().navigate(R.id.nav_activity_log)
         }
     }
 

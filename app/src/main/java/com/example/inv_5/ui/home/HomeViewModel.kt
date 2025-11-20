@@ -6,15 +6,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.inv_5.data.database.DatabaseProvider
+import com.example.inv_5.data.entities.ActivityLog
 import com.example.inv_5.data.entities.Purchase
 import com.example.inv_5.data.entities.Sale
-import com.example.inv_5.data.models.ActivityType
 import com.example.inv_5.data.models.ChartEntry
 import com.example.inv_5.data.models.DashboardStats
-import com.example.inv_5.data.models.RecentActivity
 import com.example.inv_5.data.models.StockMovementData
 import com.example.inv_5.data.models.TrendChartData
 import com.example.inv_5.data.models.StockMovement
+import com.example.inv_5.data.repository.ActivityLogRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -31,8 +31,8 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     private val _dashboardStats = MutableLiveData<DashboardStats>()
     val dashboardStats: LiveData<DashboardStats> = _dashboardStats
 
-    private val _recentActivities = MutableLiveData<List<RecentActivity>>()
-    val recentActivities: LiveData<List<RecentActivity>> = _recentActivities
+    private val _recentActivities = MutableLiveData<List<ActivityLog>>()
+    val recentActivities: LiveData<List<ActivityLog>> = _recentActivities
 
     private val _stockMovements = MutableLiveData<List<StockMovement>>()
     val stockMovements: LiveData<List<StockMovement>> = _stockMovements
@@ -113,46 +113,9 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
         )
     }
 
-    private suspend fun fetchRecentActivities(): List<RecentActivity> {
-        val recentPurchases = purchaseDao.getRecentPurchases(5)
-        val recentSales = saleDao.getRecentSales(5)
-
-        val activities = mutableListOf<RecentActivity>()
-
-        // Convert purchases to activities
-        recentPurchases.forEach { purchase: Purchase ->
-            val items = purchaseItemDao.listByPurchaseId(purchase.id)
-            activities.add(
-                RecentActivity(
-                    id = purchase.id,
-                    type = ActivityType.PURCHASE,
-                    documentNumber = purchase.invoiceNo,
-                    date = purchase.addedDate.time,
-                    itemCount = items.size,
-                    totalAmount = items.sumOf { it.total },
-                    customerOrSupplier = purchase.vendor
-                )
-            )
-        }
-
-        // Convert sales to activities
-        recentSales.forEach { sale: Sale ->
-            val items = saleItemDao.listBySaleId(sale.id)
-            activities.add(
-                RecentActivity(
-                    id = sale.id,
-                    type = ActivityType.SALE,
-                    documentNumber = "SALE-${sale.id.take(8)}",
-                    date = sale.addedDate.time,
-                    itemCount = items.size,
-                    totalAmount = sale.totalAmount,
-                    customerOrSupplier = sale.customerName.ifEmpty { "Walk-in Customer" }
-                )
-            )
-        }
-
-        // Sort by date descending and take top 10
-        return activities.sortedByDescending { it.date }.take(10)
+    private suspend fun fetchRecentActivities(): List<ActivityLog> {
+        val activityLogRepo = ActivityLogRepository(getApplication())
+        return activityLogRepo.getRecentActivities(10)
     }
 
     private suspend fun fetchStockMovements(): List<StockMovement> {

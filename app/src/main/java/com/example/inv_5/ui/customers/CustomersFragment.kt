@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.inv_5.data.database.DatabaseProvider
 import com.example.inv_5.data.entities.Customer
+import com.example.inv_5.data.repository.ActivityLogRepository
 import com.example.inv_5.databinding.DialogAddEditCustomerBinding
 import com.example.inv_5.databinding.FragmentCustomersBinding
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,7 @@ class CustomersFragment : Fragment() {
     
     private lateinit var customersAdapter: CustomersAdapter
     private val customerDao by lazy { DatabaseProvider.getInstance(requireContext()).customerDao() }
+    private val activityLogRepo by lazy { ActivityLogRepository(requireContext()) }
     
     private var currentPage = 0
     private val pageSize = 20
@@ -158,6 +160,7 @@ class CustomersFragment : Fragment() {
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                     customerDao.insertCustomer(customer)
+                    activityLogRepo.logCustomerAdded(customer)
                 }
                 Toast.makeText(requireContext(), "Customer added successfully", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
@@ -207,6 +210,7 @@ class CustomersFragment : Fragment() {
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                     customerDao.updateCustomer(updatedCustomer)
+                    activityLogRepo.logCustomerUpdated(updatedCustomer)
                 }
                 Toast.makeText(requireContext(), "Customer updated successfully", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
@@ -232,6 +236,7 @@ class CustomersFragment : Fragment() {
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 customerDao.deleteCustomer(customer.id)
+                activityLogRepo.logCustomerDeleted(customer.id, customer.name, customer.phone ?: "")
             }
             Toast.makeText(requireContext(), "Customer deleted", Toast.LENGTH_SHORT).show()
             loadPage()

@@ -16,21 +16,6 @@ data class DashboardStats(
     val thisMonthSales: Int = 0
 )
 
-data class RecentActivity(
-    val id: String,
-    val type: ActivityType,
-    val documentNumber: String,
-    val date: Long,
-    val itemCount: Int,
-    val totalAmount: Double = 0.0,
-    val customerOrSupplier: String? = null
-)
-
-enum class ActivityType {
-    PURCHASE,
-    SALE
-}
-
 data class TopProduct(
     val productId: String,
     val productName: String,

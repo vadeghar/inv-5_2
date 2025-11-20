@@ -10,6 +10,7 @@ import com.example.inv_5.data.database.DatabaseProvider
 import com.example.inv_5.data.entities.Product
 import com.example.inv_5.data.entities.Sale
 import com.example.inv_5.data.entities.SaleItem
+import com.example.inv_5.data.repository.ActivityLogRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -19,6 +20,7 @@ class AddSaleViewModel(application: Application) : AndroidViewModel(application)
     private val saleDao = db.saleDao()
     private val saleItemDao = db.saleItemDao()
     private val productDao = db.productDao()
+    private val activityLogRepo = ActivityLogRepository(application)
 
     // helper to find products by barcode
     suspend fun findProductsByBarcode(barcode: String) = productDao.getByBarcode(barcode)
@@ -81,6 +83,14 @@ class AddSaleViewModel(application: Application) : AndroidViewModel(application)
 
                         saleItemDao.insertSaleItem(item)
                     }
+                }
+
+                // Log activity
+                val isUpdate = saleDao.getById(sale.id) != null
+                if (isUpdate) {
+                    activityLogRepo.logSaleUpdated(sale)
+                } else {
+                    activityLogRepo.logSaleAdded(sale)
                 }
 
                 saveStatus.postValue("success")

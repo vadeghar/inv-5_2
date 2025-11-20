@@ -46,6 +46,11 @@
             android:name=".ui.sales.AddSaleActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.expenses.AddExpenseActivity"
+            android:exported="false"
+            android:label="Add Expense"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".ui.scanner.BluetoothScannerSettingsActivity"
             android:exported="false"
             android:label="Bluetooth Scanner Settings"

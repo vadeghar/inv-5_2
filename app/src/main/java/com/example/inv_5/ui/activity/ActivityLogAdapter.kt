@@ -1,6 +1,5 @@
-package com.example.inv_5.ui.home
+package com.example.inv_5.ui.activity
 
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,30 +8,29 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.inv_5.R
 import com.example.inv_5.data.entities.ActivityLog
 import com.example.inv_5.data.repository.ActivityLogRepository
-import com.example.inv_5.databinding.ItemRecentActivityBinding
+import com.example.inv_5.databinding.ItemActivityLogBinding
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
-class RecentActivityAdapter(
+class ActivityLogAdapter(
     private var activities: List<ActivityLog> = emptyList(),
     private val onItemClick: (ActivityLog) -> Unit
-) : RecyclerView.Adapter<RecentActivityAdapter.ActivityViewHolder>() {
+) : RecyclerView.Adapter<ActivityLogAdapter.ActivityLogViewHolder>() {
 
-    private val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+    private val dateFormat = SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault())
     private val currencyFormat = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
-        val binding = ItemRecentActivityBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityLogViewHolder {
+        val binding = ItemActivityLogBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return ActivityViewHolder(binding)
+        return ActivityLogViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ActivityLogViewHolder, position: Int) {
         holder.bind(activities[position])
     }
 
@@ -43,32 +41,47 @@ class RecentActivityAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ActivityViewHolder(
-        private val binding: ItemRecentActivityBinding
+    inner class ActivityLogViewHolder(
+        private val binding: ItemActivityLogBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(activity: ActivityLog) {
             binding.apply {
-                // Set document number
-                activityDocument.text = activity.documentNumber ?: activity.entityId
+                // Set description
+                tvDescription.text = activity.description
 
-                // Set customer/supplier/category
-                activityCustomer.text = activity.additionalInfo ?: "N/A"
+                // Set document number
+                tvDocumentNumber.text = activity.documentNumber ?: activity.entityId
+
+                // Set additional info
+                tvAdditionalInfo.text = activity.additionalInfo ?: "-"
 
                 // Set date
-                activityDate.text = dateFormat.format(activity.timestamp)
-
-                // Set item count (always 1 for activity log)
-                activityItems.text = activity.activityType
+                tvDate.text = dateFormat.format(activity.timestamp)
 
                 // Set amount
                 activity.amount?.let {
-                    activityAmount.text = currencyFormat.format(it)
+                    tvAmount.text = currencyFormat.format(it)
                 } ?: run {
-                    activityAmount.text = "-"
+                    tvAmount.text = "-"
                 }
 
-                // Set icon and background color based on entity type
+                // Set activity type badge
+                tvActivityType.text = activity.activityType
+                tvActivityType.setBackgroundColor(
+                    when (activity.activityType) {
+                        ActivityLogRepository.ActivityType.ADD -> 
+                            ContextCompat.getColor(root.context, R.color.green)
+                        ActivityLogRepository.ActivityType.EDIT -> 
+                            ContextCompat.getColor(root.context, R.color.orange)
+                        ActivityLogRepository.ActivityType.DELETE -> 
+                            ContextCompat.getColor(root.context, R.color.red_error)
+                        else -> 
+                            ContextCompat.getColor(root.context, R.color.grey)
+                    }
+                )
+
+                // Set icon based on entity type
                 val iconRes: Int
                 val bgColor: Int
                 when (activity.entityType) {
@@ -106,14 +119,14 @@ class RecentActivityAdapter(
                     }
                 }
 
-                activityIcon.setImageResource(iconRes)
+                ivIcon.setImageResource(iconRes)
                 
                 // Create circular background
                 val drawable = GradientDrawable().apply {
                     shape = GradientDrawable.OVAL
                     setColor(bgColor)
                 }
-                activityIcon.background = drawable
+                ivIcon.background = drawable
 
                 // Set click listener
                 root.setOnClickListener {

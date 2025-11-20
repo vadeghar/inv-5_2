@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.inv_5.R
 import com.example.inv_5.data.database.DatabaseProvider
 import com.example.inv_5.data.entities.Supplier
+import com.example.inv_5.data.repository.ActivityLogRepository
 import com.example.inv_5.databinding.FragmentVendorsBinding
 import com.example.inv_5.databinding.DialogAddEditSupplierBinding
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ class VendorsFragment : Fragment() {
     private var _binding: FragmentVendorsBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: SuppliersAdapter
+    private val activityLogRepo by lazy { ActivityLogRepository(requireContext()) }
     private var currentPage = 0
     private val pageSize = 10
     private var searchQuery: String = ""
@@ -157,6 +159,7 @@ class VendorsFragment : Fragment() {
                 withContext(Dispatchers.IO) {
                     val db = DatabaseProvider.getInstance(requireContext())
                     db.supplierDao().insertSupplier(newSupplier)
+                    activityLogRepo.logSupplierAdded(newSupplier)
                 }
                 Toast.makeText(requireContext(), "Supplier added successfully", Toast.LENGTH_SHORT).show()
                 loadPage()
@@ -221,6 +224,7 @@ class VendorsFragment : Fragment() {
                 withContext(Dispatchers.IO) {
                     val db = DatabaseProvider.getInstance(requireContext())
                     db.supplierDao().updateSupplier(updatedSupplier)
+                    activityLogRepo.logSupplierUpdated(updatedSupplier)
                 }
                 Toast.makeText(requireContext(), "Supplier updated successfully", Toast.LENGTH_SHORT).show()
                 loadPage()
@@ -252,6 +256,7 @@ class VendorsFragment : Fragment() {
             withContext(Dispatchers.IO) {
                 val db = DatabaseProvider.getInstance(requireContext())
                 db.supplierDao().deleteSupplier(supplier.id)
+                activityLogRepo.logSupplierDeleted(supplier.id, supplier.name, supplier.phone ?: "")
             }
             Toast.makeText(requireContext(), "Supplier deleted successfully", Toast.LENGTH_SHORT).show()
             loadPage()

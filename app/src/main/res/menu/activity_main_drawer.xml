@@ -52,6 +52,10 @@
             android:icon="@android:drawable/ic_menu_manage"
             android:title="Expenses" />
         <item
+            android:id="@+id/nav_activity_log"
+            android:icon="@android:drawable/ic_menu_recent_history"
+            android:title="Activity Log" />
+        <item
             android:id="@+id/nav_scan_barcode"
             android:icon="@android:drawable/ic_menu_camera"
             android:title="Scan Barcode" />

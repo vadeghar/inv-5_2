@@ -22,7 +22,10 @@ object DatabaseProvider {
                     SupplierMigrations.MIGRATION_6_7,
                     CustomerMigrations.MIGRATION_7_8,
                     CustomerMigrations.MIGRATION_8_9,
-                    StoreDetailsMigrations.MIGRATION_9_10
+                    StoreDetailsMigrations.MIGRATION_9_10,
+                    MIGRATION_10_11,
+                    MIGRATION_11_12,
+                    MIGRATION_12_13
                 )
                 .build()
         }
