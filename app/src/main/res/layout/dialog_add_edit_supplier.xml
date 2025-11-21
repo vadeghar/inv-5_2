@@ -32,8 +32,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -51,8 +50,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -70,8 +68,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -89,8 +86,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -108,8 +104,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="@color/white">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"

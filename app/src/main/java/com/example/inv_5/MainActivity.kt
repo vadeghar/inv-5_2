@@ -54,16 +54,6 @@ class MainActivity : AppCompatActivity() {
         // Handle new menu items that don't have fragments yet
         navView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_documents -> {
-                    Toast.makeText(this, "Documents feature coming soon", Toast.LENGTH_SHORT).show()
-                    drawerLayout.closeDrawers()
-                    true
-                }
-                R.id.nav_scan_barcode -> {
-                    Toast.makeText(this, "Barcode scanner feature coming soon", Toast.LENGTH_SHORT).show()
-                    drawerLayout.closeDrawers()
-                    true
-                }
                 else -> {
                     if (!menuItem.isEnabled) {
                         drawerLayout.closeDrawers()

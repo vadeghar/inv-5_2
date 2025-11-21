@@ -24,6 +24,9 @@
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#757575</color>
     
+    <!-- Additional accent colors -->
+    <color name="accent_orange">#EF6C00</color>
+    
     <!-- Dashboard Card Colors (Light Mode) -->
     <color name="card_purchases_bg">#E3F2FD</color>
     <color name="card_purchases_text">#0D47A1</color>
@@ -75,7 +78,8 @@
     <!-- Background & Surfaces -->
     <color name="dark_background">#0F1115</color>
     <color name="dark_surface">#1A1C20</color>
-    <color name="dark_surface_elevated">#1C2530</color>
+    <color name="dark_surface_elevated">#2A2F38</color>
+    <color name="dark_input_background">#2C3139</color>
     <color name="dark_divider">#2A2D31</color>
     
     <!-- Text Colors -->
@@ -94,7 +98,6 @@
     <!-- ========================================= -->
     <color name="light_gray_background">#F5F5F5</color>
     <color name="dark_charcoal_text">#333333</color>
-    <color name="accent_orange">#E65100</color>
     <color name="medium_gray">#CCCCCC</color>
     <color name="medium_gray_2">#f0eded</color>
     <color name="red_error">#D32F2F</color>
@@ -114,4 +117,7 @@
     <color name="stocksmart_icon_brand_s">#A7D4FF</color>
     <color name="stocksmart_icon_chart_bar">#6FE3B1</color>
     <color name="stocksmart_icon_chart_line">#8AF4C8</color>
+    
+    <!-- Chip Background Color Selector -->
+    <color name="chip_background_color">#F5F5F5</color>
 </resources>

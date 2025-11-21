@@ -43,4 +43,26 @@
         <item name="cornerRadius">8dp</item>
         <item name="android:backgroundTint">@color/white</item>
     </style>
+
+    <!-- TextInputLayout theme overlay -->
+    <style name="ThemeOverlay.App.TextInputLayout" parent="">
+        <item name="colorPrimary">@color/accent_green</item>
+        <item name="colorOnSurface">@android:color/white</item>
+        <item name="colorError">@color/red_error</item>
+    </style>
+
+    <!-- TextInputLayout style for light mode -->
+    <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">filled</item>
+        <item name="boxBackgroundColor">@color/surface_light_gray</item>
+        <item name="boxStrokeColor">@color/medium_gray</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="boxCornerRadiusTopStart">12dp</item>
+        <item name="boxCornerRadiusTopEnd">12dp</item>
+        <item name="boxCornerRadiusBottomStart">12dp</item>
+        <item name="boxCornerRadiusBottomEnd">12dp</item>
+        <item name="hintTextColor">@color/text_secondary</item>
+        <item name="android:textColorHint">@color/medium_gray</item>
+    </style>
 </resources>

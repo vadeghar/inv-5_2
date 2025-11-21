@@ -35,6 +35,7 @@ class ActivityLogRepository(context: Context) {
         const val CUSTOMER = "CUSTOMER"
         const val SUPPLIER = "SUPPLIER"
         const val REPORT = "REPORT"
+        const val STOCK_ADJUSTMENT = "STOCK_ADJUSTMENT"
     }
 
     // Purchase Activity Logging
@@ -319,6 +320,30 @@ class ActivityLogRepository(context: Context) {
             documentNumber = documentNumber,
             amount = amount,
             additionalInfo = additionalInfo,
+            timestamp = Date()
+        )
+        activityLogDao.insert(log)
+    }
+
+    // Stock Adjustment Activity Logging
+    suspend fun logStockAdjustment(
+        productName: String,
+        previousQty: Int,
+        newQty: Int,
+        reason: String,
+        adjustmentId: String
+    ) {
+        val difference = newQty - previousQty
+        val changeType = if (difference > 0) "increased" else "decreased"
+        
+        val log = ActivityLog(
+            activityType = ActivityType.ADD,
+            entityType = EntityType.STOCK_ADJUSTMENT,
+            entityId = adjustmentId,
+            description = "Stock adjusted for '$productName' from $previousQty to $newQty ($changeType by ${Math.abs(difference)}). Reason: $reason",
+            documentNumber = adjustmentId,
+            amount = null,
+            additionalInfo = reason,
             timestamp = Date()
         )
         activityLogDao.insert(log)

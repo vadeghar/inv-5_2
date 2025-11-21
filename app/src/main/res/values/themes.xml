@@ -24,6 +24,11 @@
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="colorOnBackground">@color/text_primary</item>
         
+        <!-- TextInputLayout customization for light mode -->
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+        <item name="boxStrokeColor">@color/medium_gray</item>
+        <item name="hintTextColor">@color/text_secondary</item>
+        
         <!-- Text colors -->
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textColorPrimary">@color/text_primary</item>

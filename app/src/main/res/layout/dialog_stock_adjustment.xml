@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adjust Stock"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="?android:textColorPrimary" />
+
+    <TextView
+        android:id="@+id/tvProductInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Product: Product Name"
+        android:textSize="14sp"
+        android:textColor="?android:textColorSecondary"
+        android:layout_marginTop="8dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/colorOutline"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Current Quantity -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:text="Current Qty:"
+            android:textSize="14sp"
+            android:textColor="?android:textColorPrimary" />
+
+        <TextView
+            android:id="@+id/tvCurrentQuantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/accent_blue_color" />
+    </LinearLayout>
+
+    <!-- New Quantity -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="New Quantity"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="?attr/colorPrimary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNewQuantity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Adjustment Reason -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Adjustment Reason"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="?attr/colorPrimary"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+
+        <AutoCompleteTextView
+            android:id="@+id/actvAdjustmentReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Notes -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Notes (Optional)"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="?attr/colorPrimary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:gravity="top" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Difference Preview -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:padding="12dp"
+        android:background="?attr/colorSurfaceVariant"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Difference:"
+            android:textSize="14sp"
+            android:textColor="?android:textColorPrimary" />
+
+        <TextView
+            android:id="@+id/tvDifference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/accent_blue_color" />
+    </LinearLayout>
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btnCancel"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:textColor="?attr/colorPrimary"
+            app:strokeColor="?attr/colorPrimary" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Adjustment"
+            android:backgroundTint="@color/status_in_stock"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+</LinearLayout>

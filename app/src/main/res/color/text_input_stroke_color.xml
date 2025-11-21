@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Focused state - bright gray -->
+    <item android:color="#AAAAAA" android:state_focused="true"/>
+    <!-- Error state -->
+    <item android:color="@color/dark_status_danger" android:state_activated="false" android:state_enabled="false"/>
+    <!-- Enabled but not focused - medium gray -->
+    <item android:color="#888888" android:state_enabled="true"/>
+    <!-- Default -->
+    <item android:color="#888888"/>
+</selector>

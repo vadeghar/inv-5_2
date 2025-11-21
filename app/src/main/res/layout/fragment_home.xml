@@ -369,7 +369,7 @@
                             android:layout_height="28dp"
                             android:src="@drawable/ic_sales"
                             android:contentDescription="New Sale Icon"
-                            app:tint="#EF6C00"
+                            app:tint="@color/accent_orange"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -378,7 +378,7 @@
                             android:text="New Sale"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#EF6C00" />
+                            android:textColor="@color/accent_orange" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
@@ -579,7 +579,7 @@
                             android:layout_height="28dp"
                             android:src="@drawable/ic_customers"
                             android:contentDescription="Customers Icon"
-                            app:tint="#0288D1"
+                            app:tint="@color/card_customers_text"
                             android:layout_marginBottom="4dp" />
 
                         <TextView
@@ -588,7 +588,7 @@
                             android:text="Customers"
                             android:textSize="14sp"
                             android:textStyle="bold"
-                            android:textColor="#0288D1" />
+                            android:textColor="@color/card_customers_text" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 

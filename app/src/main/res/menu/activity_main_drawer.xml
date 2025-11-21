@@ -44,10 +44,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_documents"
-            android:icon="@android:drawable/ic_menu_agenda"
-            android:title="Documents" />
-        <item
             android:id="@+id/nav_expenses"
             android:icon="@android:drawable/ic_menu_manage"
             android:title="Expenses" />
@@ -55,10 +51,6 @@
             android:id="@+id/nav_activity_log"
             android:icon="@android:drawable/ic_menu_recent_history"
             android:title="Activity Log" />
-        <item
-            android:id="@+id/nav_scan_barcode"
-            android:icon="@android:drawable/ic_menu_camera"
-            android:title="Scan Barcode" />
     </group>
 
     <group android:checkableBehavior="single">

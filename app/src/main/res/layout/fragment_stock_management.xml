@@ -1,22 +1,321 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".ui.stockmanagement.StockManagementFragment">
 
-    <TextView
-        android:id="@+id/text_stock_management"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@android:color/white"
+        app:elevation="4dp">
+
+        <!-- Stats Cards -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Row 1: Total Products and Inventory Value -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!-- Total Products Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#E3F2FD">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Total Products"
+                            android:textSize="12sp"
+                            android:textColor="@color/accent_blue_color" />
+
+                        <TextView
+                            android:id="@+id/tvTotalProducts"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/accent_blue_color"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Inventory Value Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#E8F5E9">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Inventory Value"
+                            android:textSize="12sp"
+                            android:textColor="@color/stock_in_color" />
+
+                        <TextView
+                            android:id="@+id/tvInventoryValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="₱0.00"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/stock_in_color"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Row 2: Out of Stock and Low Stock -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginTop="12dp">
+
+                <!-- Out of Stock Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#FFEBEE">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Out of Stock"
+                            android:textSize="12sp"
+                            android:textColor="@color/stock_out_color" />
+
+                        <TextView
+                            android:id="@+id/tvOutOfStock"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/stock_out_color"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <!-- Low Stock Card -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#FFF3E0">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Low Stock"
+                            android:textSize="12sp"
+                            android:textColor="@color/stock_low_color" />
+
+                        <TextView
+                            android:id="@+id/tvLowStock"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/stock_low_color"
+                            android:layout_marginTop="4dp" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+            <!-- Search Bar with Barcode Scanner -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:background="@android:drawable/edit_text"
+                android:padding="4dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="Search icon" />
+
+                <EditText
+                    android:id="@+id/etSearchProduct"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Search by name or barcode..."
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:textSize="14sp"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch" />
+
+                <ImageButton
+                    android:id="@+id/btnScanBarcode"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Scan barcode"
+                    android:padding="8dp" />
+            </LinearLayout>
+
+            <!-- Filter Chips -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupFilters"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAll"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="All"
+                    android:checked="true"
+                    app:chipBackgroundColor="@color/chip_background_color"
+                    app:chipStrokeColor="#0D47A1"
+                    app:chipStrokeWidth="1dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipInStock"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="In Stock"
+                    app:chipBackgroundColor="@color/chip_background_color"
+                    app:chipStrokeColor="#43A047"
+                    app:chipStrokeWidth="1dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipOutOfStock"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Out of Stock"
+                    app:chipBackgroundColor="@color/chip_background_color"
+                    app:chipStrokeColor="#D32F2F"
+                    app:chipStrokeWidth="1dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipLowStock"
+                    style="@style/Widget.MaterialComponents.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Low Stock"
+                    app:chipBackgroundColor="@color/chip_background_color"
+                    app:chipStrokeColor="#F57C00"
+                    app:chipStrokeWidth="1dp" />
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Products RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvStockProducts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:listitem="@layout/item_stock_product" />
+
+    <!-- Empty State -->
+    <LinearLayout
+        android:id="@+id/layoutEmptyState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@android:drawable/ic_dialog_alert"
+            android:alpha="0.3"
+            android:contentDescription="No products" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No products found"
+            android:textSize="16sp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
+
+    <!-- Floating Action Button for Stock Valuation Report -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabStockValuation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_menu_report_image"
+        android:contentDescription="Stock Valuation Report"
+        app:backgroundTint="#0D47A1"
+        app:tint="@android:color/white" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="?attr/colorSurface">
+    android:background="?attr/colorSurfaceVariant">
 
     <TextView
         android:id="@+id/dialogTitleText"
@@ -39,8 +39,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    app:boxBackgroundMode="filled"
-                    app:boxBackgroundColor="?attr/colorSurface"
+                    app:boxBackgroundMode="filled">
                     app:endIconDrawable="@drawable/ic_barcode"
                     app:endIconMode="custom">
 
@@ -80,8 +79,7 @@
                 android:id="@+id/productNameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorSurface">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -101,8 +99,7 @@
                 android:id="@+id/hsnLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorSurface">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -122,8 +119,7 @@
                 android:id="@+id/mrpLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorSurface">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -143,8 +139,7 @@
                 android:id="@+id/salePriceLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorSurface">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -162,8 +157,7 @@
                 android:id="@+id/discountPercentageLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorSurface">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -182,8 +176,7 @@
                 android:id="@+id/quantityLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorSurface">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -202,8 +195,7 @@
                 android:id="@+id/taxPercentageLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorSurface">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -221,8 +213,7 @@
                 android:id="@+id/taxableLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorSurface">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -238,8 +229,7 @@
                 android:id="@+id/taxLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorSurface">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"
@@ -257,8 +247,7 @@
                 android:id="@+id/totalLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundMode="filled"
-                app:boxBackgroundColor="?attr/colorSurface">
+                app:boxBackgroundMode="filled">
 
                 <com.google.android.material.textfield.TextInputEditText
                     style="@style/Widget.App.EditText"

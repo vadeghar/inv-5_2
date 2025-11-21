@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark mode EditText style with lighter background -->
+    <style name="Widget.App.EditText" parent="@style/Widget.AppCompat.EditText">
+        <!-- Lighter background for dark mode -->
+        <item name="android:background">@color/dark_input_background</item>
+        <item name="android:paddingLeft">@dimen/edit_text_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/edit_text_padding_horizontal</item>
+        <item name="android:textColor">@color/dark_text_primary</item>
+        <item name="android:textColorHint">@color/text_input_hint_color</item>
+        <item name="android:tint">@null</item>
+        <item name="tint">@null</item>
+    </style>
+
+    <!-- Filled primary button (accent) for dark mode -->
+    <style name="Widget.App.MaterialButton.Filled" parent="Widget.MaterialComponents.Button">
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:textColor">@color/dark_text_primary</item>
+        <item name="backgroundTint">@color/dark_accent_green</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="elevation">2dp</item>
+    </style>
+
+    <!-- Outlined secondary button for dark mode -->
+    <style name="Widget.App.MaterialButton.Outlined" parent="Widget.MaterialComponents.Button">
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:textColor">@color/dark_accent_green</item>
+        <item name="strokeColor">@color/dark_accent_green</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="android:backgroundTint">@color/dark_surface</item>
+    </style>
+
+    <!-- TextInputLayout theme overlay for dark mode -->
+    <style name="ThemeOverlay.App.TextInputLayout" parent="">
+        <item name="colorPrimary">#888888</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+        <item name="colorError">@color/dark_status_danger</item>
+        <item name="editTextStyle">@style/Widget.App.EditText</item>
+    </style>
+
+    <!-- TextInputLayout style for dark mode - outline mode -->
+    <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxStrokeColor">@color/text_input_stroke_color</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="hintTextColor">#CCCCCC</item>
+        <item name="android:textColorHint">@color/text_input_hint_color</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout</item>
+    </style>
+</resources>

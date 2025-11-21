@@ -5,43 +5,49 @@
     <!-- ========================================= -->
     
     <!-- Override primary colors for dark mode -->
-    <color name="primary_navy_blue">#0A357A</color>
-    <color name="secondary_blue">#1E5BB7</color>
-    <color name="accent_green">#43A047</color>
+    <color name="primary_navy_blue">#1E5BB7</color>
+    <color name="secondary_blue">#2979FF</color>
+    <color name="accent_green">#66BB6A</color>
     
     <!-- Background & Surface (Dark Mode) -->
-    <color name="background_white">#0F1115</color>
-    <color name="surface_light_gray">#1A1C20</color>
-    <color name="text_primary">#E6E6E6</color>
-    <color name="text_secondary">#B3B3B3</color>
+    <color name="background_white">#121212</color>
+    <color name="surface_light_gray">#2A2F38</color>
+    <color name="text_primary">#E1E1E1</color>
+    <color name="text_secondary">#AAAAAA</color>
+    
+    <!-- Chip background for dark mode -->
+    <color name="chip_background_color">#2A2A2A</color>
+    
+    <!-- Additional accent colors -->
+    <color name="accent_orange">#FFB74D</color>
     
     <!-- Dashboard Card Colors (Dark Mode) -->
-    <color name="card_purchases_bg">#1C2530</color>
-    <color name="card_purchases_text">#64B5F6</color>
-    <color name="card_sales_bg">#1C2520</color>
-    <color name="card_sales_text">#81C784</color>
-    <color name="card_stock_out_bg">#2A1C1C</color>
+    <color name="card_purchases_bg">#1A2332</color>
+    <color name="card_purchases_text">#90CAF9</color>
+    <color name="card_sales_bg">#1A2822</color>
+    <color name="card_sales_text">#A5D6A7</color>
+    <color name="card_stock_out_bg">#2D1E1E</color>
     <color name="card_stock_out_text">#EF5350</color>
-    <color name="card_week_purchases_bg">#2A2520</color>
+    <color name="card_week_purchases_bg">#2D2822</color>
     <color name="card_week_purchases_text">#FFB74D</color>
-    <color name="card_new_purchase_bg">#1C2530</color>
-    <color name="card_new_purchase_text">#64B5F6</color>
-    <color name="card_new_sale_bg">#1C2520</color>
-    <color name="card_new_sale_text">#81C784</color>
-    <color name="card_products_bg">#1C1F2A</color>
-    <color name="card_products_text">#7986CB</color>
-    <color name="card_reports_bg">#1C2A28</color>
-    <color name="card_reports_text">#4DB6AC</color>
-    <color name="card_expenses_bg">#2A2820</color>
-    <color name="card_expenses_text">#FFD54F</color>
-    <color name="card_scan_bg">#1C242A</color>
-    <color name="card_scan_text">#4FC3F7</color>
-    <color name="card_customers_bg">#25202A</color>
-    <color name="card_customers_text">#BA68C8</color>
-    <color name="card_suppliers_bg">#202A1C</color>
-    <color name="card_suppliers_text">#9CCC65</color>
-    <color name="card_settings_bg">#1F2226</color>
-    <color name="card_settings_text">#90A4AE</color>
+    <color name="card_new_purchase_bg">#1A2332</color>
+    <color name="card_new_purchase_text">#90CAF9</color>
+    <color name="card_new_sale_bg">#1A2822</color>
+    <color name="card_new_sale_text">#A5D6A7</color>
+    <color name="card_products_bg">#1E1F2D</color>
+    <color name="card_products_text">#9FA8DA</color>
+    <color name="card_reports_bg">#1A2D2B</color>
+    <color name="card_reports_text">#80CBC4</color>
+    <color name="card_expenses_bg">#2D2A22</color>
+    <color name="card_expenses_text">#FFE082</color>
+    <color name="card_scan_bg">#1A262D</color>
+    <color name="card_scan_text">#81D4FA</color>
+    <color name="card_customers_bg">#28222D</color>
+    <color name="card_customers_text">#CE93D8</color>
+    <color name="card_suppliers_bg">#222D1A</color>
+    <color name="card_suppliers_text">#AED581</color>
+    <color name="card_settings_bg">#22252A</color>
+    <color name="card_settings_text">#B0BEC5</color>
     
     <!-- Status Colors remain consistent -->
     <color name="status_in_stock">#4CAF50</color>
